@@ -14,7 +14,7 @@
                 
                 // Set the id of the entire recipe card to the recipe name
                 const recipeName = recipe.row.name;
-                const recipeLink = `/recipeviewer.html?recipe=${encodeURIComponent(recipeName)}`; // Recipe link with query param (encoded)
+                const recipeLink = `/recipeviewer?recipe=${encodeURIComponent(recipeName)}`; // Recipe link with query param (encoded)
 
                 const recipeNameElem = document.createElement('h3');
                 recipeNameElem.textContent = recipeName;
