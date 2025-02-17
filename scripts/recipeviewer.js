@@ -26,6 +26,9 @@
                     const ingredientsElem = document.createElement('p');
                     ingredientsElem.textContent = 'Ingredients: ' + recipe.row.ingredients.join(', ');
 
+                    const descriptionElem = document.createElement('p');
+                    descriptionElem.textContent = recipe.row.description;
+
                     const instructionsElem = document.createElement('p');
                     instructionsElem.textContent = 'Instructions: ' + recipe.row.instructions;
 
@@ -34,6 +37,7 @@
                     recipeDetailContainer.appendChild(recipeTimeElem);
                     recipeDetailContainer.appendChild(recipeCreatorElem);
                     recipeDetailContainer.appendChild(ingredientsElem);
+                    recipeDetailContainer.appendChild(descriptionElem);
                     recipeDetailContainer.appendChild(instructionsElem);
                 } else {
                     // Handle case if recipe not found

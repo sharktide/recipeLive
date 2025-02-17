@@ -79,10 +79,37 @@ footer {
     bottom: 0;
 }
 
-input#search-recipes {
+input {
     padding: 0.5rem;
     font-size: 1rem;
     border-radius: 5px;
     border: 1px solid #ccc;
     margin-bottom: 1rem; /* Add space below the search bars */
 }
+
+#findarecipe {
+    color:rgb(0, 0, 0);
+    background-color: #ffffff;
+    border: 2px solid #458cdd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    cursor: pointer;
+} 
+
+#findarecipe:hover {
+    background-color: #98b6eb;
+}
+
+.list-container {
+    margin-bottom: 10px;
+  }
+  .list-container ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  .list-container li {
+    margin: 5px 0;
+  }
+  .list-container button {
+    margin-left: 5px;
+  }

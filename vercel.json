@@ -7,6 +7,10 @@
         {
             "source": "/recipeviewer",
             "destination": "recipeviewer.html"
+        },
+        {
+            "source": "/newrecipe",
+            "destination": "newrecipe.html"
         }
     ]
 
