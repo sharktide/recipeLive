@@ -122,6 +122,44 @@ document.getElementById('submit').addEventListener('click', function() {
         return;
     }
 
+    if (confirm('Please confirm title:  ' + title)) {
+    } else {
+        return;
+    }
+
+    if (confirm('Please confirm your name/handle:  ' + name)) {
+    } else {
+        return;
+    }
+
+    if (confirm('Please confirm cook/bake/prep time:  ' + time)) {
+    } else {
+        return;
+    }
+
+    if (confirm('Please confirm ingredients:  ' + itemListArray)) {
+    } else {
+        return;
+    }
+
+    if (confirm('Please confirm description:  ' + description)) {
+    } else {
+        return;
+    }
+
+    if (confirm('Please confirm instructions:  ' + instructions)) {
+    } else {
+        return;
+    }
+
+    if (confirm('By uploading a recipe, you understand that it is not possible to modify and delete it. It will be public information listed here: https://hf.co/datasets/sharktide/recipes. The creators of FindMyFood are not liable or responsible for any infringments of copyright on the recipe that you created.')) {
+    } else {
+        return;
+    }
+
+    
+    alert("Sending data. This make take a few minutes. Do not close this page or press the create button again, even if a response does not come quickly. ");
+
     changeSubmitButtonColor(true);
     console.log(title);
     console.log(name);
@@ -140,6 +178,9 @@ document.getElementById('submit').addEventListener('click', function() {
         instructions: instructions
     };
 
+
+
+
     fetch('https://sharktide-recipe-api.hf.space/add/recipe?filename=' + encodeURIComponent(filename), {
         method: 'PUT',
         headers: {
@@ -150,8 +191,14 @@ document.getElementById('submit').addEventListener('click', function() {
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
+        if (data.Status == 'Recipe added successfully.') {
+            alert('Recipe Added Successfully, it may take up to 20 minutes for it to update across the site')
+            window.location.href = '/';
+        }
+        else {
         alert(data.Status);
-        window.location.href = '/';
+        //window.location.href = '/';
+        }
     })
     .catch(error => {
         console.error('Error:', error);

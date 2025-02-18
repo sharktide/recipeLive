@@ -16,35 +16,37 @@
     </nav>
     <div class="container">
         <h1>New Recipe</h1>
-        <div>
-            <p>Title of the recipe</p>
-            <input type="text" id="titleinput" placeholder="Recipe Title">
-        </div>
-        <div>
-            <p>Your Name, or name to call yourself</p>
-            <input type="text" id="nameinput" placeholder="Your name">
-        </div>
-        <div>
-            <p>Time required to create (minutes)</p>
-            <input type="text" id="timeinput" placeholder="Integer (Time in minutes)">
-        </div>
-        <div class="list-container">
-            <p>Ingredients</p>
-            <input type="text" id="itemInput" placeholder="Enter ingredient">
-            <button onclick="addItem()">Add Item</button>
-            <ul id="itemList">
-            </ul>
-        </div>
-        <div>
-            <p>Description</p>
-            <input type="text" id="descriptioninput" placeholder="Short Description">
-        </div>
-        <div>
-            <p>Instructions</p>
-            <input type="text" id="instructionsinput" placeholder="Instructions (Long text)">
-        </div>
-        <div>
-            <button id="submit">Create</button>
+        <div class="make" id="make">
+            <div>
+                <p>Title of the recipe</p>
+                <input type="text" id="titleinput" placeholder="Recipe Title">
+            </div>
+            <div>
+                <p>Your Name, or name to call yourself</p>
+                <input type="text" id="nameinput" placeholder="Your name">
+            </div>
+            <div>
+                <p>Time required to create (minutes)</p>
+                <input type="text" id="timeinput" placeholder="Integer (Time in minutes)">
+            </div>
+            <div class="list-container">
+                <p>Ingredients</p>
+                <input type="text" id="itemInput" placeholder="Enter ingredient">
+                <button onclick="addItem()">Add Item</button>
+                <ul id="itemList">
+                </ul>
+            </div>
+            <div>
+                <p>Description</p>
+                <input type="text" id="descriptioninput" placeholder="Short Description">
+            </div>
+            <div>
+                <p>Instructions</p>
+                <input type="text" id="instructionsinput" placeholder="Instructions (Long text)">
+            </div>
+            <div>
+                <button id="submit">Create</button>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="scripts/newrecipe.js"></script>
