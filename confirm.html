@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FindMyFood Community 2025 - Recipes</title>
+    <title>Confirm Recipe</title>
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <nav>
         <a href="/"><b>Home</b></a>
-        <a href="/recipes"><b>Recipes</b></a>
+        <a href="recipes.html"><b>Recipes</b></a>
         <a href="https://github.com/sharktide/findmyfood/discussions"><b>Community 🔗</b></a>
         <a href="https://hf.co/datasets/sharktide/recipes"><b>Data 🔗</b></a>
     </nav>
+
     <div class="container">
-        <h1>Browse Recipes</h1>
-        <p>Explore a variety of recipes created by the community. Here, you can find ingredients, instructions, and more!</p>
-        <div>
-            <input type="text" id="search-recipes" placeholder="Search Recipes">
+        <h1>Confirm Recipe</h1>
+        
+        <div id="recipe-detail">
+            <!-- Recipe details will be inserted here -->
         </div>
-        <div id="recipe-list">
-            <div id="recipes-container"></div>
+        <div>
+            <button id="confirm">Confirm</button>
+            <button id="edit">Edit</button>
         </div>
     </div>
-
-    <script type="text/javascript" src="scripts/recipes.js"></script>
-
+    <script type="text/javascript" src="scripts/confirm.js"></script>
 </body>
 </html>

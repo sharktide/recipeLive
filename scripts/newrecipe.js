@@ -15,6 +15,33 @@ instructionsinput.addEventListener('input', checkFormValidity);
 descriptioninput.addEventListener('input', checkFormValidity);
 itemInput.addEventListener('input', checkFormValidity);
 
+try {
+const str = urlParams.get('ingredients');
+const ingredients = JSON.parse(str);
+
+
+// Set the full recipe details
+const recipeNameElem = document.createElement('h2');
+titleinput.value = urlParams.get('title');
+
+const recipeTimeElem = document.createElement('h4');
+recipeTimeElem.textContent = '⌚: ' + urlParams.get('time') + ' minutes'
+
+const recipeCreatorElem = document.createElement('p');
+recipeCreatorElem.textContent = 'By: ' + urlParams.get('name');
+
+const ingredientsElem = document.createElement('p');
+ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
+
+const descriptionElem = document.createElement('p');
+descriptionElem.textContent = urlParams.get('desc');
+
+const instructionsElem = document.createElement('p');
+instructionsElem.textContent = 'Instructions: ' + urlParams.get('inst');
+} catch {
+
+}
+
 function checkFormValidity() {
     let title = titleinput.value;
     let name = nameinput.value;
