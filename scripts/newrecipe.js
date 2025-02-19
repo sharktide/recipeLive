@@ -15,9 +15,6 @@ instructionsinput.addEventListener('input', checkFormValidity);
 descriptioninput.addEventListener('input', checkFormValidity);
 itemInput.addEventListener('input', checkFormValidity);
 
-document.getElementById('itemList').addEventListener('DOMNodeInserted', checkFormValidity);
-document.getElementById('itemList').addEventListener('DOMNodeRemoved', checkFormValidity);
-
 function checkFormValidity() {
     let title = titleinput.value;
     let name = nameinput.value;
