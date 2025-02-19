@@ -14,7 +14,7 @@ timeinput.addEventListener('input', checkFormValidity);
 instructionsinput.addEventListener('input', checkFormValidity);
 descriptioninput.addEventListener('input', checkFormValidity);
 itemInput.addEventListener('input', checkFormValidity);
-
+/*
 try {
 const str = urlParams.get('ingredients');
 const ingredients = JSON.parse(str);
@@ -41,6 +41,7 @@ instructionsElem.textContent = 'Instructions: ' + urlParams.get('inst');
 } catch {
 
 }
+*/
 
 function checkFormValidity() {
     let title = titleinput.value;
