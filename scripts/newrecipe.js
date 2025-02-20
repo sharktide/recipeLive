@@ -173,7 +173,6 @@ document.getElementById('submit').addEventListener('click', function() {
         changeSubmitButtonColor(false);
         return;
     }
-
     if (confirm('By uploading a recipe, you understand that it is not possible to modify and delete it. It will be public information listed here: https://hf.co/datasets/sharktide/recipes. The creators of FindMyFood are not liable or responsible for any infringments of copyright on the recipe that you created.')) {
     } else {
         return;
