@@ -33,7 +33,18 @@ function setbg() {
 } 
 #findarecipe:hover, #makearecipe:hover {
     background-color: #98b6eb;
-}     
+}
+.intro {
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+    height: 200%;
+    padding: 10px;
+    background-image: url(images/recipe-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}   
 
 `);
 }

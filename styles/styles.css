@@ -3,6 +3,11 @@ nav {
     display: flex;
     justify-content: space-around;
     padding: 1rem 0;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100;
 }
 
 nav a {
@@ -76,4 +81,11 @@ input {
 }
 #edit:hover {
     background-color: rgb(83, 139, 209);
+}
+
+@media screen and (max-width: 728px) {
+    nav a {
+      float: none;
+      width: 100%;
+    }
 }
