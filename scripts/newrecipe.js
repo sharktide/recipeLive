@@ -1,5 +1,8 @@
 let itemListArray = [];
 
+const urlParams = new URLSearchParams(window.location.search);
+
+
 const titleinput = document.getElementById('titleinput');
 const nameinput = document.getElementById('nameinput');
 const timeinput = document.getElementById('timeinput');
@@ -14,34 +17,6 @@ timeinput.addEventListener('input', checkFormValidity);
 instructionsinput.addEventListener('input', checkFormValidity);
 descriptioninput.addEventListener('input', checkFormValidity);
 itemInput.addEventListener('input', checkFormValidity);
-/*
-try {
-const str = urlParams.get('ingredients');
-const ingredients = JSON.parse(str);
-
-
-// Set the full recipe details
-const recipeNameElem = document.createElement('h2');
-titleinput.value = urlParams.get('title');
-
-const recipeTimeElem = document.createElement('h4');
-recipeTimeElem.textContent = '⌚: ' + urlParams.get('time') + ' minutes'
-
-const recipeCreatorElem = document.createElement('p');
-recipeCreatorElem.textContent = 'By: ' + urlParams.get('name');
-
-const ingredientsElem = document.createElement('p');
-ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
-
-const descriptionElem = document.createElement('p');
-descriptionElem.textContent = urlParams.get('desc');
-
-const instructionsElem = document.createElement('p');
-instructionsElem.textContent = 'Instructions: ' + urlParams.get('inst');
-} catch {
-
-}
-*/
 
 function checkFormValidity() {
     let title = titleinput.value;
@@ -71,6 +46,32 @@ function changeSubmitButtonColor(isValid) {
         submitButton.style.color = 'gray';
         submitButton.innerText = 'Create 🚫';
 
+    }
+}
+
+
+
+function onloadaddItem(itemText) {
+    if (itemText !== "") {
+        itemListArray.push(itemText);
+
+        const li = document.createElement('li');
+        li.textContent = itemText;
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = function() {
+            removeItem(itemText, li);
+        };
+        li.appendChild(removeButton);
+
+        document.getElementById('itemList').appendChild(li);
+        itemInput.value = "";
+
+        console.log(itemListArray);
+        checkFormValidity();
+    } else {
+        alert("Please enter an item.");
     }
 }
 
@@ -108,6 +109,32 @@ function removeItem(itemText, li) {
 
     console.log(itemListArray);
 }
+try {
+    const str = urlParams.get('ingredients');
+    const ingredients = JSON.parse(str);
+    
+    if (ingredients === undefined || ingredients.length == 0) {
+        console.error('Ingredients is null');
+    }
+    
+    
+
+    // Set the full recipe details
+    titleinput.value = urlParams.get('title');
+
+    timeinput.value = urlParams.get('time')
+
+    nameinput.value = urlParams.get('name');
+
+    ingredients.forEach(item => onloadaddItem(item));
+
+    descriptioninput.value = urlParams.get('desc');
+
+    instructionsinput.value = urlParams.get('inst');
+} catch {}
+
+
+
 
 document.getElementById('submit').addEventListener('click', function() {
     let title = titleinput.value
@@ -146,7 +173,7 @@ document.getElementById('submit').addEventListener('click', function() {
         changeSubmitButtonColor(false);
         return;
     }
-
+    /*
     if (confirm('Please confirm title:  ' + title)) {
     } else {
         return;
@@ -176,15 +203,25 @@ document.getElementById('submit').addEventListener('click', function() {
     } else {
         return;
     }
-
+    */
     if (confirm('By uploading a recipe, you understand that it is not possible to modify and delete it. It will be public information listed here: https://hf.co/datasets/sharktide/recipes. The creators of FindMyFood are not liable or responsible for any infringments of copyright on the recipe that you created.')) {
     } else {
         return;
     }
 
-    
-    alert("Sending data. This make take a few minutes. Do not close this page or press the create button again, even if a response does not come quickly. ");
+    const stringRepresentation = JSON.stringify(itemListArray);
+    console.log(stringRepresentation);
 
+
+    confirmurl = `/confirm.html?title=${title}&time=${time}&name=${name}&ingredients=${stringRepresentation}&desc=${description}&inst=${instructions}`
+    console.log(confirmurl)
+    if (!(confirm('Proceed?'))) {
+        return
+    }
+    window.location.href = confirmurl
+    /*
+    alert("Sending data. This make take a few minutes. Do not close this page or press the create button again, even if a response does not come quickly. ");
+    
     changeSubmitButtonColor(true);
     console.log(title);
     console.log(name);
@@ -230,6 +267,7 @@ document.getElementById('submit').addEventListener('click', function() {
         alert('Error: Could not save the recipe.');
         window.location.href = '/';
     });
+    */
 });
 
 checkFormValidity();
