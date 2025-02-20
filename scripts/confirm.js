@@ -7,6 +7,10 @@ const ingredients = JSON.parse(str);
 
 const recipeDetailContainer = document.getElementById('recipe-detail');
 
+const editurl =  `/newrecipe.html?title=${urlParams.get('title')}&time=${urlParams.get('time')}&name=${urlParams.get('name')}&ingredients=${urlParams.get('ingredients')}&desc=${urlParams.get('desc')}&inst=${urlParams.get('inst')}`
+
+console.log(editurl)
+
 // Set the full recipe details
 const recipeNameElem = document.createElement('h2');
 recipeNameElem.textContent = urlParams.get('title');
@@ -48,15 +52,15 @@ console.log(urlParams.get('inst'));
 
 document.getElementById('confirm').addEventListener('click', function() {
 
-    if (urlParams.get('title') == '') {
+    if (urlParams.get('title') == '' || urlParams.get('title') == null) {
         alert("Title field is required");
         return;
     }
-    if (urlParams.get('name') == '') {
+    if (urlParams.get('name') == '' || urlParams.get('name') == null) {
         alert("Name field is required");
         return;
     }
-    if (urlParams.get('time') == '') {
+    if (urlParams.get('time') == '' || urlParams.get('time') == null) {
         alert("Cook/Bake time field is required");
         return;
     }
@@ -64,11 +68,11 @@ document.getElementById('confirm').addEventListener('click', function() {
         alert("Ingredients field is required");
         return;
     }
-    if (urlParams.get('desc') == '') {
+    if (urlParams.get('desc') == '' || urlParams.get('desc') == null) {
         alert("Description field is required");
         return;
     }
-    if (urlParams.get('inst') == '') {
+    if (urlParams.get('inst') == '' || urlParams.get('inst') == null) {
         alert("Instructions are required");
         return;
     }
@@ -79,4 +83,54 @@ document.getElementById('confirm').addEventListener('click', function() {
 
     console.log('check')
 
+    alert("Sending data. This make take a few minutes. Do not close this page or press the create button again, even if a response does not come quickly. ");
+    
+    console.log(urlParams.get('title'));
+    console.log(urlParams.get('time'));
+    console.log(urlParams.get('name'));
+    console.log(ingredients);
+    console.log(urlParams.get('desc'));
+    console.log(urlParams.get('inst'));
+
+    const filename = urlParams.get('title');
+    const recipeData = {
+        name: urlParams.get('title'),
+        time: urlParams.get('time'),
+        creator: urlParams.get('name'),
+        ingredients: ingredients,
+        description: urlParams.get('desc'),
+        instructions: urlParams.get('inst')
+    };
+
+
+
+
+    fetch('https://sharktide-recipe-api.hf.space/add/recipe?filename=' + encodeURIComponent(filename), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipeData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        if (data.Status == 'Recipe added successfully.') {
+            alert('Recipe Added Successfully, it may take up to 20 minutes for it to update across the site')
+            window.location.href = '/';
+        }
+        else {
+            alert(data.Status);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error: Could not save the recipe.');
+        window.location.href = '/';
+    });
+
+})
+
+document.getElementById('edit').addEventListener('click', function() {
+    window.location.href = editurl;
 })
