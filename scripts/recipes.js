@@ -30,7 +30,7 @@ async function fetchRecipes() {
 
             const recipeLinkElem = document.createElement('a');
             recipeLinkElem.href = recipeLink;
-            recipeLinkElem.textContent = "View Recipe Details";
+            recipeLinkElem.textContent = "View Recipe Details ↗";
 
             recipeCard.appendChild(recipeNameElem);
             recipeCard.appendChild(recipeTimeElem);
@@ -63,4 +63,58 @@ async function fetchRecipes() {
     }
 }
 
+function setbg() {
+    /**
+     * @param {string} styleString
+    */
+    const addStyle = (() => {
+        const style = document.createElement('style');
+        document.head.append(style);
+        return (styleString) => style.textContent = styleString;
+    })();
+    
+    addStyle(`     
+.center {
+    margin: auto;
+    width: 100%;
+    height: 200%;
+    padding: 10px;
+    text-align: center;
+    align-items: center;
+    background-image: url(images/recipe-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#recipes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.recipe-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.recipe-card p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.recipe-card p:first-child {
+    font-weight: bold;
+}
+`);
+}
+
 window.onload = fetchRecipes;
+setbg()
