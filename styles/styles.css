@@ -77,17 +77,3 @@ input {
 #edit:hover {
     background-color: rgb(83, 139, 209);
 }
-
-.list-container {
-    margin-bottom: 10px;
-}
-.list-container ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-.list-container li {
-    margin: 5px 0;
-}
-.list-container button {
-    margin-left: 5px;
-}
