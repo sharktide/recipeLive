@@ -84,6 +84,7 @@ function setbg() {
     background-image: url(images/recipe-bg.png);
     background-repeat: no-repeat;
     background-size: cover;
+    box-shadow: 5px 5px lightgray;
 }
 #recipes-container {
     display: grid;

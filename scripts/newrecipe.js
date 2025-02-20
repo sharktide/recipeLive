@@ -133,6 +133,33 @@ try {
     instructionsinput.value = urlParams.get('inst');
 } catch {}
 
+function setbg() {
+    /**
+     * @param {string} styleString
+    */
+    const addStyle = (() => {
+        const style = document.createElement('style');
+        document.head.append(style);
+        return (styleString) => style.textContent = styleString;
+    })();
+    
+    addStyle(`
+.list-container {
+    margin-bottom: 10px;
+}
+.list-container ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+.list-container li {
+    margin: 5px 0;
+}
+.list-container button {
+    margin-left: 5px;
+}
+
+`);
+}
 
 
 
@@ -192,3 +219,4 @@ document.getElementById('submit').addEventListener('click', function() {
 });
 
 checkFormValidity();
+setbg()
