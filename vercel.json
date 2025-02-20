@@ -11,6 +11,10 @@
         {
             "source": "/newrecipe",
             "destination": "newrecipe.html"
+        },
+        {
+            "source": "/confirm",
+            "destination": "confirm.html"
         }
     ]
 

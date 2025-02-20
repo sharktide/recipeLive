@@ -101,13 +101,26 @@ input {
 #findarecipe:hover, #makearecipe:hover {
     background-color: #98b6eb;
 }
-
-#submit {
+#submit, #confirm, #edit {
     border-radius: 5px;
     cursor: pointer;
     margin: auto;
     border: 2px solid;
     font-size: 1rem;
+}
+#confirm {
+    border-color: #1e8b54;
+    background-color: rgb(72, 228, 139);
+}
+#edit {
+    border-color: #1b4d6e;
+    background-color: rgb(133, 176, 225);
+}
+#confirm:hover {
+    background-color: rgb(68, 186, 119);
+}
+#edit:hover {
+    background-color: rgb(83, 139, 209);
 }
 
 .list-container {
