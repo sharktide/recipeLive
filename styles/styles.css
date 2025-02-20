@@ -61,7 +61,7 @@ body {
     font-weight: bold;
 }
 
-#githublink {
+#githublink, .recipe-card a {
     text-decoration: none;
     color: #458cdd;
 }
