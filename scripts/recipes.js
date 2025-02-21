@@ -87,6 +87,7 @@ function setbg() {
     box-shadow: 5px 5px lightgray;
 }
 #recipes-container {
+    font-family: "Montserrat", sans-serif;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
