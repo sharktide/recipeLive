@@ -52,8 +52,7 @@ document.getElementById('print-button').addEventListener('click', function() {
     document.getElementById('print-button').style.display = 'none';
     document.getElementById('recipetexthi').style.display = 'none';
     document.getElementById('nav').style.display = 'none';
-
-
+    
     window.print();
     document.getElementById('print-button').style.display = 'block';
     document.getElementById('recipetexthi').style.display = 'block';
@@ -119,6 +118,5 @@ function setbg() {
 }
   
 
-// Call the function when the page loads
-window.onload = fetchRecipeDetails;
+fetchRecipeDetails()
 setbg()
