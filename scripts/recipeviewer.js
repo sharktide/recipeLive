@@ -1,7 +1,8 @@
+const urlParams = new URLSearchParams(window.location.search);
+
 async function fetchRecipeDetails() {
     try {
         // Get the recipe name from the query parameter
-        const urlParams = new URLSearchParams(window.location.search);
         const recipeName = urlParams.get('recipe');
         
         // Fetch recipe data
@@ -52,7 +53,7 @@ document.getElementById('print-button').addEventListener('click', function() {
     document.getElementById('print-button').style.display = 'none';
     document.getElementById('recipetexthi').style.display = 'none';
     document.getElementById('nav').style.display = 'none';
-    
+
     window.print();
     document.getElementById('print-button').style.display = 'block';
     document.getElementById('recipetexthi').style.display = 'block';
@@ -61,7 +62,28 @@ document.getElementById('print-button').addEventListener('click', function() {
 
 
 });
-
+document.getElementById('downloadBtn').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+        orientation: 'portrait',  // Or 'landscape' if you want landscape mode
+        unit: 'mm',               // Unit in millimeters
+        format: 'letter',             // Standard A4 paper size
+        });
+    
+        // Capture HTML content from the body, adjusting margins and scaling
+        doc.html(document.body, {
+        margin: [10, 10, 10, 10],  // Set margins (top, right, bottom, left)
+        x: 10,
+        y: 10,
+        html2canvas: {
+            scale: 0.25,  // Adjust this value to fit the content better. Lower values make the content smaller.
+        },
+        callback: function (doc) {
+            // Save the PDF when the content is rendered
+            doc.save(`${urlParams.get('recipe')}.pdf`);
+        }
+    });
+});
 function setbg() {
     /**
      * @param {string} styleString
@@ -73,7 +95,7 @@ function setbg() {
     })();
     
     addStyle(`
-#print-button {
+#print-button, #downloadBtn {
     color:rgb(0, 0, 0);
     background-color: #ffffff;
     border: 4px solid #458cdd;
@@ -81,7 +103,7 @@ function setbg() {
     cursor: pointer;
     margin: 10px;
 }
-#print-button:hover {
+#print-button:hover, #downloadBtn:hover {
     background-color: lightgray;
 } 
 
