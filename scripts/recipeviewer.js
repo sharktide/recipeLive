@@ -48,6 +48,77 @@ async function fetchRecipeDetails() {
         console.error('Error fetching recipe details:', error);
     }
 }
+document.getElementById('print-button').addEventListener('click', function() {
+    document.getElementById('print-button').style.display = 'none';
+    document.getElementById('recipetexthi').style.display = 'none';
+    document.getElementById('nav').style.display = 'none';
+
+
+    window.print();
+    document.getElementById('print-button').style.display = 'block';
+    document.getElementById('recipetexthi').style.display = 'block';
+    document.getElementById('nav').style.display = 'block';
+    window.location.reload()
+
+
+});
+
+function setbg() {
+    /**
+     * @param {string} styleString
+    */
+    const addStyle = (() => {
+        const style = document.createElement('style');
+        document.head.append(style);
+        return (styleString) => style.textContent = styleString;
+    })();
+    
+    addStyle(`
+#print-button {
+    color:rgb(0, 0, 0);
+    background-color: #ffffff;
+    border: 4px solid #458cdd;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+#print-button:hover {
+    background-color: lightgray;
+} 
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+}
+
+.cta-button:active {
+    background-color: #004085;
+    transform: translateY(1px);
+}
+`);
+}
+  
 
 // Call the function when the page loads
 window.onload = fetchRecipeDetails;
+setbg()
