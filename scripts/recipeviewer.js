@@ -75,7 +75,7 @@ document.getElementById('downloadBtn').addEventListener('click', function() {
         x: 10,
         y: 10,
         html2canvas: {
-            scale: 0.25,
+            scale: 0.15,
         },
         callback: function (doc) {
             doc.save(`${urlParams.get('recipe')}.pdf`);
