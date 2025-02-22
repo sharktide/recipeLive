@@ -65,21 +65,19 @@ document.getElementById('print-button').addEventListener('click', function() {
 document.getElementById('downloadBtn').addEventListener('click', function() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({
-        orientation: 'portrait',  // Or 'landscape' if you want landscape mode
-        unit: 'mm',               // Unit in millimeters
-        format: 'letter',             // Standard A4 paper size
+        orientation: 'portrait', 
+        unit: 'mm',             
+        format: 'letter',             
         });
     
-        // Capture HTML content from the body, adjusting margins and scaling
         doc.html(document.body, {
-        margin: [10, 10, 10, 10],  // Set margins (top, right, bottom, left)
+        margin: [10, 10, 10, 10],
         x: 10,
         y: 10,
         html2canvas: {
-            scale: 0.25,  // Adjust this value to fit the content better. Lower values make the content smaller.
+            scale: 0.25,
         },
         callback: function (doc) {
-            // Save the PDF when the content is rendered
             doc.save(`${urlParams.get('recipe')}.pdf`);
         }
     });
@@ -142,3 +140,18 @@ function setbg() {
 
 fetchRecipeDetails()
 setbg()
+
+
+// Copyright 2025 Rihaan Meher
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
