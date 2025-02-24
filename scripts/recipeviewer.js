@@ -28,7 +28,19 @@ async function fetchRecipeDetails() {
             recipeCategoryElem.textContent = recipe.row.category;
 
             const recipeDiffElem = document.createElement('p');
-            recipeDiffElem.textContent = recipe.row.diff;
+
+            if (recipe.row.diff == 'Easy') {
+                recipeDiffElem.textContent = recipe.row.diff + ' 🟢';
+            }
+            else if (recipe.row.diff == 'Medium') {
+                recipeDiffElem.textContent = recipe.row.diff + ' 🟡';
+            }
+            else if (recipe.row.diff == 'Hard') {
+                recipeDiffElem.textContent = recipe.row.diff + ' 🔴'
+            }
+            else {
+                recipeDiffElem.textContent = recipe.row.diff = ' 🔵'
+            }
 
             const ingredientsElem = document.createElement('p');
             ingredientsElem.textContent = 'Ingredients: ' + recipe.row.ingredients.join(', ');
