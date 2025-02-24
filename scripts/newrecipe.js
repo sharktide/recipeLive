@@ -6,6 +6,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const titleinput = document.getElementById('titleinput');
 const nameinput = document.getElementById('nameinput');
 const timeinput = document.getElementById('timeinput');
+const categoryinput = document.getElementById('categoryinput');
+const diffinput = document.getElementById('diffinput')
 const instructionsinput = document.getElementById('instructionsinput');
 const descriptioninput = document.getElementById('descriptioninput');
 const itemInput = document.getElementById('itemInput');
@@ -14,6 +16,8 @@ const submitButton = document.getElementById('submit');
 titleinput.addEventListener('input', checkFormValidity);
 nameinput.addEventListener('input', checkFormValidity);
 timeinput.addEventListener('input', checkFormValidity);
+categoryinput.addEventListener('input', checkFormValidity);
+diffinput.addEventListener('input', checkFormValidity);
 instructionsinput.addEventListener('input', checkFormValidity);
 descriptioninput.addEventListener('input', checkFormValidity);
 itemInput.addEventListener('input', checkFormValidity);
@@ -22,6 +26,8 @@ function checkFormValidity() {
     let title = titleinput.value;
     let name = nameinput.value;
     let time = timeinput.value;
+    let category = categoryinput.value;
+    let diff = diffinput.value
     let description = descriptioninput.value;
     let instructions = instructionsinput.value;
 
@@ -29,6 +35,8 @@ function checkFormValidity() {
         title !== '' &&
         name !== '' &&
         time !== '' &&
+        category !== '' &&
+        diff !== '' &&
         itemListArray.length > 0 &&
         description !== '' &&
         instructions !== '';
@@ -126,6 +134,10 @@ try {
 
     nameinput.value = urlParams.get('name');
 
+    categoryinput.value = urlParams.get('category');
+
+    diffinput.value = urlParams.get('diff');
+
     ingredients.forEach(item => onloadaddItem(item));
 
     descriptioninput.value = urlParams.get('desc');
@@ -167,6 +179,8 @@ document.getElementById('submit').addEventListener('click', function() {
     let title = titleinput.value
     let name = nameinput.value
     let time = timeinput.value
+    let category = categoryinput.value
+    let diff = diffinput.value
     let description = descriptioninput.value
     let instructions = instructionsinput.value
 
@@ -182,6 +196,16 @@ document.getElementById('submit').addEventListener('click', function() {
     }
     if (time == '') {
         alert("Cook/Bake time field is required");
+        changeSubmitButtonColor(false);
+        return;
+    }
+    if (category == '') {
+        alert("Category declaration is required");
+        changeSubmitButtonColor(false);
+        return;
+    }
+    if (diff == '') {
+        alert("Difficulty field is required");
         changeSubmitButtonColor(false);
         return;
     }
@@ -209,7 +233,7 @@ document.getElementById('submit').addEventListener('click', function() {
     console.log(stringRepresentation);
 
 
-    confirmurl = `/confirm?title=${title}&time=${time}&name=${name}&ingredients=${stringRepresentation}&desc=${description}&inst=${instructions}`
+    confirmurl = `/confirm?title=${title}&time=${time}&name=${name}&category=${category}&diff=${diff}&ingredients=${stringRepresentation}&desc=${description}&inst=${instructions}`
     console.log(confirmurl)
     if (!(confirm('Proceed?'))) {
         return

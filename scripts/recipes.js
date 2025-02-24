@@ -39,6 +39,12 @@ async function fetchRecipes() {
             
             const recipeCreatorElem = document.createElement('p');
             recipeCreatorElem.textContent = 'By: ' + recipe.row.creator;
+
+            const recipeCategoryElem = document.createElement('p');
+            recipeCategoryElem.textContent = recipe.row.category;
+
+            const recipeDiffElem = document.createElement('p');
+            recipeDiffElem.textContent = recipe.row.diff;
             
             const recipeIngredients = document.createElement('p');
             recipeIngredients.textContent = 'Ingredients: ' + recipe.row.ingredients.join(', ');
@@ -50,6 +56,9 @@ async function fetchRecipes() {
             recipeCard.appendChild(recipeNameElem);
             recipeCard.appendChild(recipeTimeElem);
             recipeCard.appendChild(recipeCreatorElem);
+            recipeCard.appendChild(recipeCategoryElem);
+            recipeCard.appendChild(recipeDiffElem);
+
             recipeCard.appendChild(recipeIngredients);
             recipeCard.appendChild(recipeLinkElem);
             

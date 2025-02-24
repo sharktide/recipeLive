@@ -7,7 +7,7 @@ const ingredients = JSON.parse(str);
 
 const recipeDetailContainer = document.getElementById('recipe-detail');
 
-const editurl =  `/newrecipe?title=${urlParams.get('title')}&time=${urlParams.get('time')}&name=${urlParams.get('name')}&ingredients=${urlParams.get('ingredients')}&desc=${urlParams.get('desc')}&inst=${urlParams.get('inst')}`
+const editurl =  `/newrecipe?title=${urlParams.get('title')}&time=${urlParams.get('time')}&name=${urlParams.get('name')}&category=${urlParams.get('category')}&diff=${urlParams.get('diff')}&ingredients=${urlParams.get('ingredients')}&desc=${urlParams.get('desc')}&inst=${urlParams.get('inst')}`
 
 console.log(editurl)
 
@@ -20,6 +20,12 @@ recipeTimeElem.textContent = '⌚: ' + urlParams.get('time') + ' minutes'
 
 const recipeCreatorElem = document.createElement('p');
 recipeCreatorElem.textContent = 'By: ' + urlParams.get('name');
+
+const recipeCategoryElem = document.createElement('p');
+recipeCategoryElem.textContent = urlParams.get('category')
+
+const recipeDiffElem = document.createElement('p');
+recipeDiffElem.textContent = urlParams.get('diff')
 
 const ingredientsElem = document.createElement('p');
 ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
@@ -34,6 +40,8 @@ instructionsElem.textContent = 'Instructions: ' + urlParams.get('inst');
 recipeDetailContainer.appendChild(recipeNameElem);
 recipeDetailContainer.appendChild(recipeTimeElem);
 recipeDetailContainer.appendChild(recipeCreatorElem);
+recipeDetailContainer.appendChild(recipeCategoryElem);
+recipeDetailContainer.appendChild(recipeDiffElem);
 recipeDetailContainer.appendChild(ingredientsElem);
 recipeDetailContainer.appendChild(descriptionElem);
 recipeDetailContainer.appendChild(instructionsElem);
@@ -41,6 +49,8 @@ recipeDetailContainer.appendChild(instructionsElem);
 console.log(urlParams.get('title'));
 console.log(urlParams.get('name'));
 console.log(urlParams.get('time'));
+console.log(urlParams.get('category'));
+console.log(urlParams.get('diff'));
 console.log(ingredients);
 console.log(urlParams.get('desc'));
 console.log(urlParams.get('inst'));
@@ -62,6 +72,14 @@ document.getElementById('confirm').addEventListener('click', function() {
     }
     if (urlParams.get('time') == '' || urlParams.get('time') == null) {
         alert("Cook/Bake time field is required");
+        return;
+    }
+    if (urlParams.get('category') == '' || urlParams.get('category') == null) {
+        alert("Category declaration is required");
+        return;
+    }
+    if (urlParams.get('diff') == '' || urlParams.get('diff') == null) {
+        alert("Difficulty field is required");
         return;
     }
     if (ingredients === undefined || urlParams.get('ingredients').length == 0) {
@@ -88,6 +106,8 @@ document.getElementById('confirm').addEventListener('click', function() {
     console.log(urlParams.get('title'));
     console.log(urlParams.get('time'));
     console.log(urlParams.get('name'));
+    console.log(urlParams.get('category'));
+    console.log(urlParams.get('diff'));
     console.log(ingredients);
     console.log(urlParams.get('desc'));
     console.log(urlParams.get('inst'));
@@ -97,6 +117,8 @@ document.getElementById('confirm').addEventListener('click', function() {
         name: urlParams.get('title'),
         time: urlParams.get('time'),
         creator: urlParams.get('name'),
+        category: urlParams.get('category'),
+        diff: urlParams.get('fidd'),
         ingredients: ingredients,
         description: urlParams.get('desc'),
         instructions: urlParams.get('inst')
