@@ -118,7 +118,7 @@ document.getElementById('confirm').addEventListener('click', function() {
         time: urlParams.get('time'),
         creator: urlParams.get('name'),
         category: urlParams.get('category'),
-        diff: urlParams.get('fidd'),
+        diff: urlParams.get('diff'),
         ingredients: ingredients,
         description: urlParams.get('desc'),
         instructions: urlParams.get('inst')
