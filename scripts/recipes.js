@@ -1,31 +1,12 @@
 const urlParams = new URLSearchParams(window.location.search);
 const diff_filter = urlParams.get('diff');
 const category_filter = urlParams.get('category');
-const time_filter = urlParams.get('time');  // Get time filter from URL
+const time_filter = urlParams.get('time');
+const favorite_filter = urlParams.get('favorites')
 const diff_dropdown = document.getElementById('diff-dropdown');
 const category_dropdown = document.getElementById('category-dropdown');
-const time_dropdown = document.getElementById('time-dropdown');  // Get time dropdown element
-
-// Set initial dropdown values based on URL parameters
-if (diff_filter == null || diff_filter == undefined || diff_filter == 'Choose Difficulty') {
-    diff_dropdown.value = 'Choose Difficulty';
-} else if (diff_filter == 'Easy') {
-    diff_dropdown.value = 'Easy 🟢';
-} else if (diff_filter == 'Medium') {
-    diff_dropdown.value = 'Medium 🟡';
-} else if (diff_filter == 'Hard') {
-    diff_dropdown.value = 'Hard 🔴';
-} else if (diff_filter == 'Other') {
-    diff_dropdown.value = 'Other 🔵';
-}
-
-if (category_filter != null && category_filter != 'Select Category') {
-    category_dropdown.value = category_filter;
-}
-
-if (time_filter != null && time_filter !== 'Select Time') {
-    time_dropdown.value = time_filter;
-}
+const time_dropdown = document.getElementById('time-dropdown');
+const favorite_dropdown = document.getElementById('favorite-dropdown')
 
 async function fetchRecipes() {
     try {
@@ -52,8 +33,55 @@ async function fetchRecipes() {
         
         verifiedContainer.appendChild(verifiedTitle);
         unverifiedContainer.appendChild(unverifiedTitle);
-        
+
+        switch (urlParams.get('diff')) {
+            case 'Easy':
+                diff_dropdown.value = 'Easy 🟢'
+                break
+            case 'Medium':
+                diff_dropdown.value = 'Medium 🟡'
+                break
+            case 'Hard':
+                diff_dropdown.value = 'Hard 🔴'
+                break
+            case 'Other': 
+                diff_dropdown.value = 'Other 🔵'
+                break
+            default:
+                diff_dropdown.value = 'Choose Difficulty'
+                break
+        }
+        switch (urlParams.get('category')) {
+            case null:
+                category_dropdown.value = 'Select Category'
+                break
+            default:
+                category_dropdown.value = urlParams.get('category')
+                break
+        }
+        switch (urlParams.get('time')) {
+            case null:
+                time_dropdown.value = 'Select Time'
+                break
+            default:
+                time_dropdown.value = urlParams.get('time')
+                break
+        }
+        switch (urlParams.get('favorites')) {
+            case null:
+                favorite_dropdown.value = 'All ☆'
+                break
+            default:
+                favorite_dropdown.value = urlParams.get('favorites')
+                break
+        }
+
+        // Get favorited recipes from localStorage
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
         recipes.forEach(recipe => {
+            const recipeName = recipe.row.name;
+
             // Apply category filter
             if (category_filter && category_filter !== 'Select Category' && recipe.row.category !== category_filter) {
                 return;
@@ -68,6 +96,14 @@ async function fetchRecipes() {
                 else if (time_filter == '15 - 20 minutes' && (time < 15 || time > 20)) return;
                 else if (time_filter == '20 - 25 minutes' && (time < 20 || time > 25)) return;
                 else if (time_filter == '> 25 minutes' && time <= 25) return;
+            }
+            if (favorite_filter) {
+                if (favorite_filter == 'Unfavorited Only ☆') {
+                    if (favorites.includes(recipeName)) return;
+                }
+                else if (favorite_filter == 'Favorites Only ⭐') {
+                    if (!(favorites.includes(recipeName))) return;
+                }
             }
 
             const recipeCard = document.createElement('div');
@@ -89,7 +125,6 @@ async function fetchRecipes() {
                 return;
             }
 
-            const recipeName = recipe.row.name;
             const recipeLink = `/recipeviewer?recipe=${encodeURIComponent(recipeName)}`;
             
             const recipeNameElem = document.createElement('h3');
@@ -125,6 +160,38 @@ async function fetchRecipes() {
             const recipeLinkElem = document.createElement('a');
             recipeLinkElem.href = recipeLink;
             recipeLinkElem.textContent = "View Recipe Details ↗";
+            // Create the favorite button// Create the favorite button
+            const favoriteButton = document.createElement('button');
+            favoriteButton.textContent = 'Favorite';
+            favoriteButton.classList.add('favorite-button');
+
+            // Check if recipe is already favorited
+            if (favorites.includes(recipeName)) {
+                favoriteButton.textContent = 'Unfavorite';
+                favoriteButton.classList.add('unfavorited');  // Add unfavorited class if the recipe is favorited
+                favoriteButton.disabled = false;  // Enable the button to allow unfavoriting
+            }
+
+            // Add event listener to the favorite button
+            favoriteButton.addEventListener('click', () => {
+                if (favorites.includes(recipeName)) {
+                    // Remove from favorites (unfavorite)
+                    favorites = favorites.filter(favorite => favorite !== recipeName);
+                    favoriteButton.textContent = 'Favorite';  // Change button text to 'Favorite'
+                    favoriteButton.classList.remove('unfavorited');  // Remove the unfavorited class
+                } else {
+                    // Add to favorites
+                    favorites.push(recipeName);
+                    favoriteButton.textContent = 'Unfavorite';  // Change button text to 'Unfavorite'
+                    favoriteButton.classList.add('unfavorited');  // Add the unfavorited class
+                }
+                // Save the updated favorites list to localStorage
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                // Update the button's disabled state
+                favoriteButton.disabled = false;  // Re-enable the button
+            });
+
+
             
             recipeCard.appendChild(recipeNameElem);
             recipeCard.appendChild(recipeTimeElem);
@@ -133,6 +200,7 @@ async function fetchRecipes() {
             recipeCard.appendChild(recipeDiffElem);
             recipeCard.appendChild(recipeIngredients);
             recipeCard.appendChild(recipeLinkElem);
+            recipeCard.appendChild(favoriteButton);  // Append the favorite button
             
             if (blacklist.includes(recipeName)) {
                 unverifiedContainer.appendChild(recipeCard);
@@ -164,7 +232,7 @@ async function fetchRecipes() {
     }
 }
 
-// Set background and layout styles
+// Function to set background and other styling remains the same
 function setbg() {
     /** * @param {string} styleString */
     const addStyle = (() => {
@@ -220,6 +288,27 @@ function setbg() {
     .recipe-card p:first-child { 
       font-weight: bold; 
     } 
+    .favorite-button { 
+      background-color: #ffcc00; 
+      border: none; 
+      padding: 10px 15px; 
+      font-size: 14px; 
+      cursor: pointer; 
+      border-radius: 5px; 
+      margin-top: 10px; 
+    } 
+    .favorite-button:disabled { 
+      background-color: #ccc; 
+      cursor: not-allowed; 
+    }
+    .favorite-button {
+    background-color: #ffcc00;
+    }
+
+    .favorite-button.unfavorited {
+        background-color:rgb(119, 168, 219); /* Red color for unfavoriting */
+    }
+
     `);
 }
 
@@ -240,16 +329,20 @@ diff_dropdown.addEventListener('change', function() {
     else if (diff_dropdown.value == 'Other 🔵') {
         currentDiffValue = 'Other';
     }
-    window.location.href = `/recipes?diff=${currentDiffValue}&category=${category_dropdown.value}&time=${time_dropdown.value}`; 
+    window.location.href = `/recipes?diff=${currentDiffValue}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`; 
 });
 
 category_dropdown.addEventListener('change', function() {
-    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}`;
+    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`;
 });
 
 time_dropdown.addEventListener('change', function() {
-    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}`;
+    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`;
 });
+
+favorite_dropdown.addEventListener('change', function() {
+    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`
+})
 
 window.onload = fetchRecipes;
 setbg();
