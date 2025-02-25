@@ -1,28 +1,30 @@
 const urlParams = new URLSearchParams(window.location.search);
 const diff_filter = urlParams.get('diff');
-const category_filter = urlParams.get('category'); // Get category from URL
+const category_filter = urlParams.get('category');
+const time_filter = urlParams.get('time');  // Get time filter from URL
 const diff_dropdown = document.getElementById('diff-dropdown');
-const category_dropdown = document.getElementById('category-dropdown'); // Get category dropdown element
+const category_dropdown = document.getElementById('category-dropdown');
+const time_dropdown = document.getElementById('time-dropdown');  // Get time dropdown element
 
 // Set initial dropdown values based on URL parameters
 if (diff_filter == null || diff_filter == undefined || diff_filter == 'Choose Difficulty') {
     diff_dropdown.value = 'Choose Difficulty';
-}
-else if (diff_filter == 'Easy') {
+} else if (diff_filter == 'Easy') {
     diff_dropdown.value = 'Easy 🟢';
-}
-else if (diff_filter == 'Medium') {
+} else if (diff_filter == 'Medium') {
     diff_dropdown.value = 'Medium 🟡';
-}
-else if (diff_filter == 'Hard') {
+} else if (diff_filter == 'Hard') {
     diff_dropdown.value = 'Hard 🔴';
-}
-else if (diff_filter == 'Other') {
+} else if (diff_filter == 'Other') {
     diff_dropdown.value = 'Other 🔵';
 }
 
 if (category_filter != null && category_filter != 'Select Category') {
     category_dropdown.value = category_filter;
+}
+
+if (time_filter != null && time_filter !== 'Select Time') {
+    time_dropdown.value = time_filter;
 }
 
 async function fetchRecipes() {
@@ -55,6 +57,17 @@ async function fetchRecipes() {
             // Apply category filter
             if (category_filter && category_filter !== 'Select Category' && recipe.row.category !== category_filter) {
                 return;
+            }
+
+            // Apply time filter
+            if (time_filter) {
+                const time = recipe.row.time;
+                if (time_filter == '< 5 minutes' && time >= 5) return;
+                else if (time_filter == '5 - 10 minutes' && (time < 5 || time > 10)) return;
+                else if (time_filter == '10 - 15 minutes' && (time < 10 || time > 15)) return;
+                else if (time_filter == '15 - 20 minutes' && (time < 15 || time > 20)) return;
+                else if (time_filter == '20 - 25 minutes' && (time < 20 || time > 25)) return;
+                else if (time_filter == '> 25 minutes' && time <= 25) return;
             }
 
             const recipeCard = document.createElement('div');
@@ -227,12 +240,15 @@ diff_dropdown.addEventListener('change', function() {
     else if (diff_dropdown.value == 'Other 🔵') {
         currentDiffValue = 'Other';
     }
-    window.location.href = `/recipes?diff=${currentDiffValue}&category=${category_dropdown.value}`; // Add category to URL
+    window.location.href = `/recipes?diff=${currentDiffValue}&category=${category_dropdown.value}&time=${time_dropdown.value}`; 
 });
 
 category_dropdown.addEventListener('change', function() {
-    let currentCategoryValue = category_dropdown.value;
-    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${currentCategoryValue}`;
+    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}`;
+});
+
+time_dropdown.addEventListener('change', function() {
+    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}`;
 });
 
 window.onload = fetchRecipes;
