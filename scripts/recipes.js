@@ -164,6 +164,7 @@ async function fetchRecipes() {
             const favoriteButton = document.createElement('button');
             favoriteButton.textContent = 'Favorite';
             favoriteButton.classList.add('favorite-button');
+            favoriteButton.classList.add('cta-button');
 
             // Check if recipe is already favorited
             if (favorites.includes(recipeName)) {
@@ -296,6 +297,11 @@ function setbg() {
       cursor: pointer; 
       border-radius: 5px; 
       margin-top: 10px; 
+      transition: all 0.3s ease;
+      filter: brightness(1.0);
+    }
+    .favorite-button:hover {
+      filter: brightness(0.8);
     } 
     .favorite-button:disabled { 
       background-color: #ccc; 
@@ -307,6 +313,13 @@ function setbg() {
 
     .favorite-button.unfavorited {
         background-color:rgb(119, 168, 219); /* Red color for unfavoriting */
+    }
+    .cta-button:hover {
+        transform: translateY(-3px);
+    }
+
+    .cta-button:active {
+        transform: translateY(1px);
     }
 
     `);
