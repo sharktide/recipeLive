@@ -1,31 +1,40 @@
 const urlParams = new URLSearchParams(window.location.search);
-const diff_filter = urlParams.get('diff')
-const diff_dropdown = document.getElementById('diff-dropdown')
+const diff_filter = urlParams.get('diff');
+const category_filter = urlParams.get('category'); // Get category from URL
+const diff_dropdown = document.getElementById('diff-dropdown');
+const category_dropdown = document.getElementById('category-dropdown'); // Get category dropdown element
+
+// Set initial dropdown values based on URL parameters
 if (diff_filter == null || diff_filter == undefined || diff_filter == 'Choose Difficulty') {
-    diff_dropdown.value = 'Choose Difficulty'
+    diff_dropdown.value = 'Choose Difficulty';
 }
 else if (diff_filter == 'Easy') {
-    diff_dropdown.value = 'Easy 🟢'
+    diff_dropdown.value = 'Easy 🟢';
 }
 else if (diff_filter == 'Medium') {
-    diff_dropdown.value = 'Medium 🟡'
+    diff_dropdown.value = 'Medium 🟡';
 }
 else if (diff_filter == 'Hard') {
-    diff_dropdown.value = 'Hard 🔴'
+    diff_dropdown.value = 'Hard 🔴';
 }
 else if (diff_filter == 'Other') {
-    diff_dropdown.value = 'Other 🔵'
+    diff_dropdown.value = 'Other 🔵';
 }
+
+if (category_filter != null && category_filter != 'Select Category') {
+    category_dropdown.value = category_filter;
+}
+
 async function fetchRecipes() {
     try {
         const response = await fetch('https://datasets-server.huggingface.co/first-rows?dataset=sharktide%2Frecipes&config=default&split=train');
         const data = await response.json();
         const recipes = data.rows;
-    
+
         const blacklistResponse = await fetch('data/approved.json');
         const blacklistData = await blacklistResponse.json();
         const blacklist = blacklistData.badRecipes;
-    
+
         const recipesContainer = document.getElementById('recipes-container');
         
         const verifiedContainer = document.createElement('div');
@@ -43,23 +52,30 @@ async function fetchRecipes() {
         unverifiedContainer.appendChild(unverifiedTitle);
         
         recipes.forEach(recipe => {
+            // Apply category filter
+            if (category_filter && category_filter !== 'Select Category' && recipe.row.category !== category_filter) {
+                return;
+            }
+
             const recipeCard = document.createElement('div');
             recipeCard.classList.add('recipe-card');
+
             if (diff_filter == null || diff_filter == undefined) {
                 console.log(diff_filter);
             }
             else if ((diff_filter == 'Easy') && (!(recipe.row.diff == 'Easy'))) {
-                return
+                return;
             }
             else if ((diff_filter == 'Medium') && (!(recipe.row.diff == 'Medium'))) {
-                return
+                return;
             }
             else if ((diff_filter == 'Hard') && (!(recipe.row.diff == 'Hard'))) {
-                return
+                return;
             }
             else if ((diff_filter == 'Other') && (!(recipe.row.diff == 'Other'))) {
-                return
+                return;
             }
+
             const recipeName = recipe.row.name;
             const recipeLink = `/recipeviewer?recipe=${encodeURIComponent(recipeName)}`;
             
@@ -90,7 +106,6 @@ async function fetchRecipes() {
                 recipeDiffElem.textContent = 'Other 🔵'
             }
             
-            
             const recipeIngredients = document.createElement('p');
             recipeIngredients.textContent = 'Ingredients: ' + recipe.row.ingredients.join(', ');
             
@@ -103,49 +118,48 @@ async function fetchRecipes() {
             recipeCard.appendChild(recipeCreatorElem);
             recipeCard.appendChild(recipeCategoryElem);
             recipeCard.appendChild(recipeDiffElem);
-
             recipeCard.appendChild(recipeIngredients);
             recipeCard.appendChild(recipeLinkElem);
             
             if (blacklist.includes(recipeName)) {
-            unverifiedContainer.appendChild(recipeCard);
+                unverifiedContainer.appendChild(recipeCard);
             } else {
-            verifiedContainer.appendChild(recipeCard);
+                verifiedContainer.appendChild(recipeCard);
             }
         });
-    
+
         recipesContainer.appendChild(verifiedContainer);
         recipesContainer.appendChild(unverifiedContainer);
-    
+
         // Add search functionality
         document.getElementById('search-recipes').addEventListener('input', function() {
             const query = this.value.toLowerCase();
             const recipeCards = document.querySelectorAll('.recipe-card');
             recipeCards.forEach(card => {
-            const recipeName = card.querySelector('h3').textContent.toLowerCase();
-            const recipeIngredients = card.querySelector('p').textContent.toLowerCase();
-            if (recipeName.includes(query) || recipeIngredients.includes(query)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
+                const recipeName = card.querySelector('h3').textContent.toLowerCase();
+                const recipeIngredients = card.querySelector('p').textContent.toLowerCase();
+                if (recipeName.includes(query) || recipeIngredients.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         });
-    
-        } catch (error) {
+
+    } catch (error) {
         console.error('Error fetching recipes:', error);
-        }
     }
-  
-  
-    function setbg() {
-        /** * @param {string} styleString */
-        const addStyle = (() => {
+}
+
+// Set background and layout styles
+function setbg() {
+    /** * @param {string} styleString */
+    const addStyle = (() => {
         const style = document.createElement('style');
         document.head.append(style);
         return (styleString) => style.textContent = styleString;
-        })();
-    
+    })();
+
     addStyle(` 
     .center { 
       margin: auto; 
@@ -195,39 +209,31 @@ async function fetchRecipes() {
     } 
     `);
 }
+
 diff_dropdown.addEventListener('change', function() {
-    let currentDiffValue = ''
+    let currentDiffValue = '';
     if (diff_dropdown.value == 'Choose Difficulty') {
-        currentDiffValue = 'Choose Difficulty'
+        currentDiffValue = 'Choose Difficulty';
     }
     else if (diff_dropdown.value == 'Easy 🟢') {
-        currentDiffValue = 'Easy'
+        currentDiffValue = 'Easy';
     }
     else if (diff_dropdown.value == 'Medium 🟡') {
-        currentDiffValue = 'Medium'
+        currentDiffValue = 'Medium';
     }
     else if (diff_dropdown.value == 'Hard 🔴') {
-        currentDiffValue = 'Hard'
+        currentDiffValue = 'Hard';
     }
     else if (diff_dropdown.value == 'Other 🔵') {
-        currentDiffValue = 'Other'
+        currentDiffValue = 'Other';
     }
-    window.location.href = `/recipes?diff=${currentDiffValue}`
-})  
+    window.location.href = `/recipes?diff=${currentDiffValue}&category=${category_dropdown.value}`; // Add category to URL
+});
+
+category_dropdown.addEventListener('change', function() {
+    let currentCategoryValue = category_dropdown.value;
+    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${currentCategoryValue}`;
+});
+
 window.onload = fetchRecipes;
 setbg();
-
-
-// Copyright 2025 Rihaan Meher
-
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-
-//     http://www.apache.org/licenses/LICENSE-2.0
-
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
