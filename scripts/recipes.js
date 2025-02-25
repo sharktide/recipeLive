@@ -1,3 +1,21 @@
+const urlParams = new URLSearchParams(window.location.search);
+const diff_filter = urlParams.get('diff')
+const diff_dropdown = document.getElementById('diff-dropdown')
+if (diff_filter == null || diff_filter == undefined || diff_filter == 'Choose Difficulty') {
+    diff_dropdown.value = 'Choose Difficulty'
+}
+else if (diff_filter == 'Easy') {
+    diff_dropdown.value = 'Easy 🟢'
+}
+else if (diff_filter == 'Medium') {
+    diff_dropdown.value = 'Medium 🟡'
+}
+else if (diff_filter == 'Hard') {
+    diff_dropdown.value = 'Hard 🔴'
+}
+else if (diff_filter == 'Other') {
+    diff_dropdown.value = 'Other 🔵'
+}
 async function fetchRecipes() {
     try {
         const response = await fetch('https://datasets-server.huggingface.co/first-rows?dataset=sharktide%2Frecipes&config=default&split=train');
@@ -27,7 +45,21 @@ async function fetchRecipes() {
         recipes.forEach(recipe => {
             const recipeCard = document.createElement('div');
             recipeCard.classList.add('recipe-card');
-            
+            if (diff_filter == null || diff_filter == undefined) {
+                console.log(diff_filter);
+            }
+            else if ((diff_filter == 'Easy') && (!(recipe.row.diff == 'Easy'))) {
+                return
+            }
+            else if ((diff_filter == 'Medium') && (!(recipe.row.diff == 'Medium'))) {
+                return
+            }
+            else if ((diff_filter == 'Hard') && (!(recipe.row.diff == 'Hard'))) {
+                return
+            }
+            else if ((diff_filter == 'Other') && (!(recipe.row.diff == 'Other'))) {
+                return
+            }
             const recipeName = recipe.row.name;
             const recipeLink = `/recipeviewer?recipe=${encodeURIComponent(recipeName)}`;
             
@@ -55,7 +87,7 @@ async function fetchRecipes() {
                 recipeDiffElem.textContent = recipe.row.diff + ' 🔴'
             }
             else {
-                recipeDiffElem.textContent = recipe.row.diff = ' 🔵'
+                recipeDiffElem.textContent = 'Other 🔵'
             }
             
             
@@ -163,7 +195,25 @@ async function fetchRecipes() {
     } 
     `);
 }
-  
+diff_dropdown.addEventListener('change', function() {
+    let currentDiffValue = ''
+    if (diff_dropdown.value == 'Choose Difficulty') {
+        currentDiffValue = 'Choose Difficulty'
+    }
+    else if (diff_dropdown.value == 'Easy 🟢') {
+        currentDiffValue = 'Easy'
+    }
+    else if (diff_dropdown.value == 'Medium 🟡') {
+        currentDiffValue = 'Medium'
+    }
+    else if (diff_dropdown.value == 'Hard 🔴') {
+        currentDiffValue = 'Hard'
+    }
+    else if (diff_dropdown.value == 'Other 🔵') {
+        currentDiffValue = 'Other'
+    }
+    window.location.href = `/recipes?diff=${currentDiffValue}`
+})  
 window.onload = fetchRecipes;
 setbg();
 
