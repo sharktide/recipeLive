@@ -4,7 +4,7 @@ async function fetchRecipeDetails() {
     try {
         // Get the recipe name from the query parameter
         const recipeName = urlParams.get('recipe');
-        
+        document.title = recipeName        
         // Fetch recipe data
         const response = await fetch('https://datasets-server.huggingface.co/first-rows?dataset=sharktide%2Frecipes&config=default&split=train');
         const data = await response.json();
