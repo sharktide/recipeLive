@@ -10,7 +10,7 @@ const favorite_dropdown = document.getElementById('favorite-dropdown')
 
 async function fetchRecipes() {
     try {
-        const response = await fetch('https://datasets-server.huggingface.co/first-rows?dataset=sharktide%2Frecipes&config=default&split=train');
+        const response = await fetch('https://sharktide-recipe2.hf.space/supabase/recipes');
         const data = await response.json();
         const recipes = data.rows;
 

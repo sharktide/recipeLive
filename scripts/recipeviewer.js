@@ -6,7 +6,7 @@ async function fetchRecipeDetails() {
         const recipeName = urlParams.get('recipe');
         document.title = recipeName        
         // Fetch recipe data
-        const response = await fetch('https://datasets-server.huggingface.co/first-rows?dataset=sharktide%2Frecipes&config=default&split=train');
+        const response = await fetch('https://sharktide-recipe2.hf.space/supabase/recipes');
         const data = await response.json();
         
         const recipe = data.rows.find(r => r.row.name.toLowerCase() === recipeName.toLowerCase());
