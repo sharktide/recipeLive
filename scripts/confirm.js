@@ -1,3 +1,11 @@
+sb.auth.getUser()
+.then(result => {
+    if (result.data && result.data.user) {
+        void 0
+    } else {
+        window.location.href="/auth"
+    }
+});
 
 // Get the recipe name from the query parameter
 const urlParams = new URLSearchParams(window.location.search);
@@ -31,10 +39,14 @@ const ingredientsElem = document.createElement('p');
 ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
 
 const descriptionElem = document.createElement('p');
-descriptionElem.textContent = urlParams.get('desc');
+descriptionElem.setAttribute('style', 'white-space: pre;')
+const descriptionText = urlParams.get('desc') || ""
+descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
 
 const instructionsElem = document.createElement('p');
-instructionsElem.textContent = 'Instructions: ' + urlParams.get('inst');
+instructionsElem.setAttribute('style', 'white-space: pre;');
+const instructionsText = urlParams.get('inst') || "";
+instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
 
 // Append to the container
 recipeDetailContainer.appendChild(recipeNameElem);
@@ -95,61 +107,64 @@ document.getElementById('confirm').addEventListener('click', function() {
         return;
     }
 
-    if (!(confirm('Are you sure you would like to upload the recipe? This action cannot be undone.'))) {
-        return
-    }
+    const userPromise = sb.auth.getUser(); // Store the promise
 
-    console.log('check')
-
-    alert("Sending data. This make take a few minutes. Do not close this page or press the create button again, even if a response does not come quickly. ");
-    
-    console.log(urlParams.get('title'));
-    console.log(urlParams.get('time'));
-    console.log(urlParams.get('name'));
-    console.log(urlParams.get('category'));
-    console.log(urlParams.get('diff'));
-    console.log(ingredients);
-    console.log(urlParams.get('desc'));
-    console.log(urlParams.get('inst'));
-
-    const filename = urlParams.get('title');
-    const recipeData = {
-        name: urlParams.get('title'),
-        time: urlParams.get('time'),
-        creator: urlParams.get('name'),
-        category: urlParams.get('category'),
-        diff: urlParams.get('diff'),
-        ingredients: ingredients,
-        description: urlParams.get('desc'),
-        instructions: urlParams.get('inst')
-    };
-
-
-
-
-    fetch('https://sharktide-recipe-api.hf.space/add/recipe?filename=' + encodeURIComponent(filename), {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(recipeData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        if (data.Status == 'Recipe added successfully.') {
-            alert('Recipe Added Successfully, it may take up to 20 minutes for it to update across the site')
-            window.location.href = '/';
+    userPromise.then(result => {
+        const userId = result.data?.user?.id;
+        if (!(confirm('Are you sure you would like to upload the recipe? This action cannot be undone.'))) {
+            return
         }
-        else {
-            alert(data.Status);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error: Could not save the recipe.');
-        window.location.href = '/';
-    });
+
+        console.log('check')
+
+        alert("Sending data. This make take a few minutes. Do not close this page or press the create button again, even if a response does not come quickly. ");
+        
+        console.log(urlParams.get('title'));
+        console.log(urlParams.get('time'));
+        console.log(urlParams.get('name'));
+        console.log(urlParams.get('category'));
+        console.log(urlParams.get('diff'));
+        console.log(ingredients);
+        console.log(urlParams.get('desc'));
+        console.log(urlParams.get('inst'));
+
+        const filename = urlParams.get('title');
+        const recipeData = {
+            name: urlParams.get('title'),
+            time: urlParams.get('time'),
+            creator: urlParams.get('name'),
+            category: urlParams.get('category'),
+            diff: urlParams.get('diff'),
+            ingredients: ingredients,
+            description: urlParams.get('desc'),
+            instructions: urlParams.get('inst'),
+            user_id: userId
+        };
+
+        fetch('https://sharktide-recipe2.hf.space/supabase/add/recipe', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(recipeData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            if (data.message == 'Recipe stored successfully.') {
+                alert('Recipe Added Successfully, it may take up to 2 minutes for it to update across the site')
+                window.location.href = '/';
+            }
+            else {
+                alert(data.Status);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error: Could not save the recipe.');
+        });
+
+        })
 
 })
 

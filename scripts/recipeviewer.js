@@ -2,15 +2,19 @@ const urlParams = new URLSearchParams(window.location.search);
 
 async function fetchRecipeDetails() {
     try {
-        // Get the recipe name from the query parameter
-        const recipeName = urlParams.get('recipe');
-        document.title = recipeName        
-        // Fetch recipe data
-        const response = await fetch('https://sharktide-recipe2.hf.space/supabase/recipes');
-        const data = await response.json();
-        
-        const recipe = data.rows.find(r => r.row.name.toLowerCase() === recipeName.toLowerCase());
+        const recipeId = urlParams.get('recipe');
+        if (!recipeId) {
+            document.getElementById('recipe-detail').textContent = "No recipe ID provided!";
+            return;
+        }
 
+        document.title = 'Loading Recipe...';
+
+        // Fetch specific recipe by ID
+        const response = await fetch(`https://sharktide-recipe2.hf.space/supabase/recipebyid?id=${encodeURIComponent(recipeId)}`);
+        const data = await response.json();
+
+        const recipe = data.recipe || data.row || data; // support for flexible API response shape
         if (recipe) {
             const recipeDetailContainer = document.getElementById('recipe-detail');
             
@@ -46,10 +50,14 @@ async function fetchRecipeDetails() {
             ingredientsElem.textContent = 'Ingredients: ' + recipe.row.ingredients.join(', ');
 
             const descriptionElem = document.createElement('p');
-            descriptionElem.textContent = recipe.row.description;
+            descriptionElem.setAttribute('style', 'white-space: pre;')
+            const descriptionText = recipe.row.description || ""
+            descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
 
             const instructionsElem = document.createElement('p');
-            instructionsElem.textContent = 'Instructions: ' + recipe.row.instructions;
+            instructionsElem.setAttribute('style', 'white-space: pre;');
+            const instructionsText = recipe.row.instructions || "";
+            instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
 
             // Append to the container
             recipeDetailContainer.appendChild(recipeNameElem);

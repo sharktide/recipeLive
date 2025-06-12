@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecipeLive - Recipe Details</title>
+    <title>recipeLive - signin/signup</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,48 +32,25 @@
         <li id="user-dropdown" style="display: none; position: relative;">
         <button id="profile-btn">👤</button>
         <ul class="dropdown-menu">
-            <li><a href="/myrecipes">My Recipes</a></li>
+            <li><a href="#">My Recipes</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#" id="logout-btn">Logout</a></li>
         </ul>
         </li>
 
     </nav>
-    <div class="container" id="container">
-        <h1 id="recipetexthi">Recipe Details</h1>
-        
-        <div id="recipe-detail">
-            <!-- Recipe details will be inserted here -->
-        </div>
+    <div class="container">
+        <h1>Sign In / Sign Up</h1>
 
-        <button id="print-button" class="cta-button">Print Recipe</button>
-        <button id="downloadBtn" class="cta-button">Download PDF</button>
+        <input type="email" id= "email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
 
+        <button id="signup" onclick="signup()">Sign Up</button>
+        <button id="login" onclick="login()">Log In</button>
 
+        <p id="status"></p>
 
     </div>
-    <script type="text/javascript" src="scripts/recipeviewer.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="scripts/require.js"></script>
-    <script data-goatcounter="https://findmyfood.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
-
-<!--
-
-   Copyright 2025 Rihaan Meher
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
--->
-

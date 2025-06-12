@@ -1,3 +1,12 @@
+sb.auth.getUser()
+.then(result => {
+    if (result.data && result.data.user) {
+        void 0
+    } else {
+        window.location.href="/auth"
+    }
+});
+
 const urlParams = new URLSearchParams(window.location.search);
 const diff_filter = urlParams.get('diff');
 const category_filter = urlParams.get('category');
@@ -8,9 +17,19 @@ const category_dropdown = document.getElementById('category-dropdown');
 const time_dropdown = document.getElementById('time-dropdown');
 const favorite_dropdown = document.getElementById('favorite-dropdown')
 
+async function getData() {
+    try {
+        const result = await sb.auth.getUser(); // Await the promise
+        return result.data?.user?.id; // Extract userId and return it
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        return null; // Handle errors gracefully
+    }
+}
+
 async function fetchRecipes() {
     try {
-        const response = await fetch('https://sharktide-recipe2.hf.space/supabase/recipes');
+        const response = await fetch(`https://sharktide-recipe2.hf.space/supabase/myrecipes?user_id=${await getData()}`);
         const data = await response.json();
         const recipes = data.rows;
 
@@ -81,7 +100,8 @@ async function fetchRecipes() {
 
         recipes.forEach(recipe => {
             const recipeName = recipe.row.name;
-            const recipeId = recipe.row.id
+            const recipeId = recipe.row.id;
+
             // Apply category filter
             if (category_filter && category_filter !== 'Select Category' && recipe.row.category !== category_filter) {
                 return;
@@ -163,8 +183,18 @@ async function fetchRecipes() {
             // Create the favorite button// Create the favorite button
             const favoriteButton = document.createElement('button');
             favoriteButton.textContent = 'Favorite';
-            favoriteButton.classList.add('favorite-button');
+            favoriteButton.classList.add('favorite-button', 'y');
             favoriteButton.classList.add('cta-button');
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.classList.add('favorite-button', 'g');
+            editButton.classList.add('cta-button');
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.classList.add('favorite-button', 'r');
+            deleteButton.classList.add('cta-button');
 
             // Check if recipe is already favorited
             if (favorites.includes(recipeName)) {
@@ -192,6 +222,8 @@ async function fetchRecipes() {
                 favoriteButton.disabled = false;  // Re-enable the button
             });
 
+            editButton.addEventListener('click', edit);
+            deleteButton.addEventListener('click', del)
 
             
             recipeCard.appendChild(recipeNameElem);
@@ -202,7 +234,8 @@ async function fetchRecipes() {
             recipeCard.appendChild(recipeIngredients);
             recipeCard.appendChild(recipeLinkElem);
             recipeCard.appendChild(favoriteButton);  // Append the favorite button
-            
+            recipeCard.appendChild(editButton);  // Append the favorite button
+            recipeCard.appendChild(deleteButton);  // Append the favorite button
             if (blacklist.includes(recipeName)) {
                 unverifiedContainer.appendChild(recipeCard);
             } else {
@@ -233,7 +266,49 @@ async function fetchRecipes() {
     }
 }
 
-// Function to set background and other styling remains the same
+function edit(event) {
+    void 0
+}
+
+async function del(event) {
+    const recipeCard = event.target.closest('.recipe-card');
+    const recipeId = recipeCard.querySelector('a').href.split('=')[1];
+
+    const confirmed = confirm("Are you sure you want to delete this recipe?");
+    if (!confirmed) return;
+
+    try {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) {
+            alert("Not logged in");
+            return;
+        }
+
+        const response = await fetch("https://sharktide-recipe2.hf.space/supabase/delrecipe", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: recipeId,
+                user_id: user.id
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            alert("Recipe deleted successfully!");
+            recipeCard.remove();
+        } else {
+            alert("Error deleting recipe: " + (result.detail || "Unknown error"));
+        }
+    } catch (error) {
+        console.error("Error deleting recipe:", error);
+        alert("Error deleting recipe");
+    }
+}
+
 function setbg() {
     /** * @param {string} styleString */
     const addStyle = (() => {
@@ -289,8 +364,33 @@ function setbg() {
     .recipe-card p:first-child { 
       font-weight: bold; 
     } 
-    .favorite-button { 
+    .favorite-button {
+        margin-right: 10px;
+    }
+    .favorite-button.y { 
       background-color: #ffcc00; 
+      border: none; 
+      padding: 10px 15px; 
+      font-size: 14px; 
+      cursor: pointer; 
+      border-radius: 5px; 
+      margin-top: 10px; 
+      transition: all 0.3s ease;
+      filter: brightness(1.0);
+    }
+    .favorite-button.g { 
+      background-color:rgb(0, 255, 30); 
+      border: none; 
+      padding: 10px 15px; 
+      font-size: 14px; 
+      cursor: pointer; 
+      border-radius: 5px; 
+      margin-top: 10px; 
+      transition: all 0.3s ease;
+      filter: brightness(1.0);
+    }
+    .favorite-button.r { 
+      background-color:rgb(255, 0, 0); 
       border: none; 
       padding: 10px 15px; 
       font-size: 14px; 

@@ -1,3 +1,13 @@
+sb.auth.getUser()
+.then(result => {
+    if (result.data && result.data.user) {
+        void 0
+    } else {
+        window.location.href="/auth"
+    }
+});
+
+
 let itemListArray = [];
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -140,9 +150,9 @@ try {
 
     ingredients.forEach(item => onloadaddItem(item));
 
-    descriptioninput.value = urlParams.get('desc');
+    descriptioninput.value = urlParams.get('desc').replace("\\r\\n", "\n");
 
-    instructionsinput.value = urlParams.get('inst');
+    instructionsinput.value = urlParams.get('inst').replace("\\r\\n", "\n");
 } catch {}
 
 function setbg() {
@@ -181,8 +191,8 @@ document.getElementById('submit').addEventListener('click', function() {
     let time = timeinput.value
     let category = categoryinput.value
     let diff = diffinput.value
-    let description = descriptioninput.value
-    let instructions = instructionsinput.value
+    let description = descriptioninput.value.replace(/\n/g, "\\r\\n")
+    let instructions = instructionsinput.value.replace(/\n/g, "\\r\\n")
 
     if (title == '') {
         alert("Title field is required");

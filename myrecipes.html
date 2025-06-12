@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecipeLive 2025</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <title>RecipeLive - My Recipes</title>
 </head>
 <body>
     <nav id="nav">
@@ -32,36 +32,68 @@
         <li id="user-dropdown" style="display: none; position: relative;">
         <button id="profile-btn">👤</button>
         <ul class="dropdown-menu">
-            <li><a href="/myrecipes">My Recipes</a></li>
+            <li><a href="#">My Recipes</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#" id="logout-btn">Logout</a></li>
         </ul>
         </li>
 
     </nav>
-    <div class="intro">
-        <h1>Find Recipes. Anywhere. Anytime.</h1>
-        <h3>RecipeLive 2025</h3>
-        <h5><em>formerly findmyfood</em></h5>
+    <div class="center">
+        <h1 >My Recipes</h1>
     </div>
-    <div class="container">
-        <p>RecipeLive is a way for people to share recipes of their favorite creations with everyone. Anyone can make and use recipes. FindMyFood is open source and available on <a href="https://github.com/sharktide/findmyfood" id="githublink"><b>Github 🔗</b></a></p>
+    <div class="container" id="container">
         <div>
-            <div>
-                <button id="findarecipe" class="cta-button">
-                    <h3>Find a recipe >>></h3>
-                </button>
-            </div>
-            <div></div>
-            <div>
-                <button id="makearecipe" class="cta-button">
-                    <h3>Make a recipe >>></h3>
-                </button>
-            </div>
+            <input type="text" id="search-recipes" placeholder="Search Recipes">
+            <select id="diff-dropdown">
+                <option>Choose Difficulty</option>
+                <option>Easy 🟢</option>
+                <option>Medium 🟡</option>
+                <option>Hard 🔴</option>
+                <option>Other 🔵</option>
+            </select>
+            <select id="category-dropdown">
+                <option>Select Category</option>
+                <option>American</option>
+                <option>UK</option>
+                <option>French</option>
+                <option>Italian</option>
+                <option>Chinese</option>
+                <option>Indian</option>
+                <option>Asian</option>
+                <option>Spanish</option>
+                <option>Central American</option>
+                <option>South American</option>
+                <option>Ethiopian</option>
+                <option>African</option>
+                <option>Australia / Oceania</option>
+                <option>Dessert</option>
+                <option>Smoothie</option>
+                <option>Salad</option>
+                <option>Other</option>
+            </select>
+            <select id="time-dropdown">
+                <option>Select Time</option>
+                <option>&lt; 5 minutes</option>
+                <option>5 - 10 minutes</option>
+                <option>10 - 15 minutes</option>
+                <option>15 - 20 minutes</option>
+                <option>20 - 25 minutes</option>
+                <option>&gt; 25 minutes</option>
+            </select>
+            <select id="favorite-dropdown">
+                <option>All ☆</option>
+                <option>Unfavorited Only ☆</option>
+                <option>Favorites Only ⭐</option>
+            </select>
+            
+        </div>
+        <div id="recipe-list">
+            <div id="recipes-container"></div>
         </div>
     </div>
-    <script type="text/javascript" src="scripts/scripts.js"></script>
     <script src="scripts/require.js"></script>
+    <script type="text/javascript" src="scripts/myrecipes.js"></script>
     <script data-goatcounter="https://findmyfood.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
