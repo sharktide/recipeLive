@@ -1,4 +1,4 @@
-import { getPaginationParams, setupPaginationControls } from './helper/pagination.js';
+import { getPaginationParams, setupPaginationControls, hidebtns } from './helper/pagination.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const diff_filter = urlParams.get('diff');
@@ -9,6 +9,7 @@ const diff_dropdown = document.getElementById('diff-dropdown');
 const category_dropdown = document.getElementById('category-dropdown');
 const time_dropdown = document.getElementById('time-dropdown');
 const favorite_dropdown = document.getElementById('favorite-dropdown')
+const se = document.getElementById('search-recipes')
 
 async function doFetch(offset, limit) {
     const q = urlParams.get('search')
@@ -16,8 +17,7 @@ async function doFetch(offset, limit) {
         const z = await fetch(`https://sharktide-recipe2.hf.space/supabase/recipes/paged?offset=${offset}&limit=${limit}&search=${q}`);
         return z
     } else {
-        const z = await fetch(`https://sharktide-recipe2.hf.space/supabase/recipes/paged?offset=${offset}&limit=${limit}`);
-        return z
+        alert('Could Not Find Search Query')
     }
 }
 
@@ -25,6 +25,9 @@ async function fetchRecipes() {
     try {
         const { offset, limit } = getPaginationParams(urlParams);
         const response = await doFetch(offset, limit)
+        if (response === "nr") {
+            return 0
+        }
         const data = await response.json();
         const recipes = data.rows;
 
@@ -41,9 +44,9 @@ async function fetchRecipes() {
         unverifiedContainer.id = 'unverified-recipes';
         
         const verifiedTitle = document.createElement('h2');
-        verifiedTitle.textContent = 'Recipes';
+        verifiedTitle.textContent = 'Search Results';
         const unverifiedTitle = document.createElement('h2');
-        unverifiedTitle.textContent = 'Blacklisted Recipes';
+        unverifiedTitle.textContent = 'Blacklisted Search Results';
         
         verifiedContainer.appendChild(verifiedTitle);
         unverifiedContainer.appendChild(unverifiedTitle);
@@ -205,8 +208,6 @@ async function fetchRecipes() {
                 // Update the button's disabled state
                 favoriteButton.disabled = false;  // Re-enable the button
             });
-
-
             
             recipeCard.appendChild(recipeNameElem);
             recipeCard.appendChild(recipeTimeElem);
@@ -228,6 +229,7 @@ async function fetchRecipes() {
         recipesContainer.appendChild(unverifiedContainer);
 
         setupPaginationControls({ offset, limit, totalCount: data.total_count });
+
     } catch (error) {
         console.error('Error fetching recipes:', error);
         alert(`Error Fetching Recipes: ${error}`)
@@ -347,21 +349,31 @@ diff_dropdown.addEventListener('change', function() {
     else if (diff_dropdown.value == 'Other 🔵') {
         currentDiffValue = 'Other';
     }
-    window.location.href = `/recipes?diff=${currentDiffValue}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`; 
+    window.location.href = `/search?diff=${currentDiffValue}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}&search=${se.value}`; 
 });
 
 category_dropdown.addEventListener('change', function() {
-    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`;
+    window.location.href = `/search?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}&search=${se.value}`;
 });
 
 time_dropdown.addEventListener('change', function() {
-    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`;
+    window.location.href = `/search?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}&search=${se.value}`;
 });
 
 favorite_dropdown.addEventListener('change', function() {
-    window.location.href = `/recipes?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}`
+    window.location.href = `/search?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}&search=${se.value}`;
 })
 
-window.onload = fetchRecipes;
+document.getElementById('searchbutton').addEventListener('click', function() {
+    window.location.href = window.location.href = `/search?diff=${diff_filter || 'Choose Difficulty'}&category=${category_dropdown.value}&time=${time_dropdown.value}&favorites=${favorite_dropdown.value}&search=${se.value}`
+})
 setbg();
 
+if (urlParams.get('search')) {
+    se.value = urlParams.get('search')
+    fetchRecipes()
+} else {
+    document.getElementById("loading-spinner").style.display = "none";
+    hidebtns()
+    document.getElementById("make").style.display = "block";
+}

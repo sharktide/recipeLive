@@ -1,0 +1,29 @@
+#pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px auto;
+}
+
+#pagination-controls button {
+  padding: 10px 20px;
+  background-color: #3178c6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#pagination-controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#searchbutton {
+  padding: 10px 20px;
+  background-color: #3178c6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

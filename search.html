@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <title>RecipeLive - Recipes</title>
+    <title>RecipeLive - Search</title>
 </head>
 <body>
     <nav id="nav">
@@ -47,11 +47,6 @@
 
     </div>
     <div class="container" id="container">
-        <div id="loading-spinner">
-            <br>
-            <div class="spinner"></div>
-            <p>Loading recipes...</p>
-        </div id="make">
         <div>
             <select id="diff-dropdown">
                 <option>Choose Difficulty</option>
@@ -94,7 +89,15 @@
                 <option>Unfavorited Only ☆</option>
                 <option>Favorites Only ⭐</option>
             </select>
-            
+        </div>
+        <br>
+        <div>
+            <input type="text" id="search-recipes" placeholder="Search Recipes">&nbsp;&nbsp;<button id="searchbutton">Find</button>
+        </div>
+        <div id="loading-spinner">
+            <br>
+            <div class="spinner"></div>
+            <p>Loading recipes...</p>
         </div>
         <div id="recipe-list">
             <div id="recipes-container"></div>
@@ -105,7 +108,7 @@
         </div>
     </div>
 
-    <script type="module" src="scripts/recipes.js"></script>
+    <script type="module" src="scripts/search.js"></script>
     <script src="scripts/require.js"></script>
     <script data-goatcounter="https://findmyfood.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>

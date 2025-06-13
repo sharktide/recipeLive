@@ -1,5 +1,13 @@
+body:has(#make) #recipe-container {
+    display: block; /* Show when #make exists */
+}
+
+body:not(:has(#make)) #recipe-container {
+    display: none; /* Hide when #make is absent */
+}
+
 #make {
-    display: none; /* Hide inputs and textareas initially */
+    display: none;
 }
 
 #loading-spinner {
