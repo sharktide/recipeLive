@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/loadingnr.css">
+    <link rel="stylesheet" href="styles/dialog.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,13 +45,9 @@
     <div id="del-dialog" class="dialog">
         <div class="dialog-content">
             <h3>Are you SURE you want to delete this?</h3>
-            <p>Run this command in your terminal:</p>
-            <div class="copy-container" id="copy-container">
-                <span id="install-command">pip install restructuredpython</span>
-                <button onclick="copyCommand()" class="copy-btn">📋 Copy</button>
-            </div>
+            <p class="warning">⚠️ This Action Cannot Be Undone ⚠️</p>
             <br>
-            <button onclick="closeDialog()" class="close-btn">Close</button>
+            <span><button onclick="forget()" class="delbtn">No&nbsp;</button>&nbsp;&nbsp;<button onclick="closeDialog()" class="delbtn" id="yesdel">Yes</button></span>
         </div>
     </div>
     <div class="center">

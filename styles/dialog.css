@@ -1,0 +1,45 @@
+.dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 400px;
+    z-index: 1000;
+}
+
+.dialog-content h3 {
+    color: rgb(299, 0, 0);
+    margin-bottom: 10px;
+}
+
+.warning {
+    color: orange;
+}
+
+.delbtn { 
+    background-color:rgb(209, 0, 0); 
+    color: white;
+    border: none; 
+    padding: 8px 12px; 
+    font-size: 14px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    margin-top: 10px; 
+    transition: all 0.3s ease;
+    filter: brightness(1.0);
+}
+.delbtn:hover {
+    filter: brightness(0.8);
+} 
+
+@media (max-width: 768px) {
+    .dialog {
+        width: 90%;
+    }
+}

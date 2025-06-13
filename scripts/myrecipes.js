@@ -17,6 +17,14 @@ const category_dropdown = document.getElementById('category-dropdown');
 const time_dropdown = document.getElementById('time-dropdown');
 const favorite_dropdown = document.getElementById('favorite-dropdown')
 
+function openDialog() {
+    document.getElementById("del-dialog").style.display = "block";
+}
+
+function closeDialog() {
+    document.getElementById("del-dialog").style.display = "none";
+}
+
 async function getData() {
     try {
         const result = await sb.auth.getUser(); // Await the promise
@@ -275,12 +283,23 @@ function edit(event) {
     window.location.href = `/edit?id=${encodeURIComponent(recipeId)}`
 }
 
-async function del(event) {
+function del(event) {
     const recipeCard = event.target.closest('.recipe-card');
     const recipeId = recipeCard.querySelector('a').href.split('=')[1];
 
-    const confirmed = confirm("Are you sure you want to delete this recipe?");
-    if (!confirmed) return;
+    document.getElementById("del-dialog").dataset.recipeId = recipeId;
+    
+    document.getElementById("del-dialog").style.display = "block";
+}
+
+function forget() {
+    document.getElementById("del-dialog").dataset.recipeId = undefined;
+    document.getElementById("del-dialog").style.display = "none";
+}
+
+document.getElementById("yesdel").addEventListener("click", async () => {
+    const dialog = document.getElementById("del-dialog");
+    const recipeId = dialog.dataset.recipeId;
 
     try {
         const { data: { user } } = await sb.auth.getUser();
@@ -303,16 +322,18 @@ async function del(event) {
         const result = await response.json();
 
         if (response.ok && result.success) {
-            alert("Recipe deleted successfully!");
-            recipeCard.remove();
+            window.location.reload
         } else {
             alert("Error deleting recipe: " + (result.detail || "Unknown error"));
         }
     } catch (error) {
         console.error("Error deleting recipe:", error);
-        alert("Error deleting recipe");
+    } finally {
+        // Close the dialog after deletion attempt
+        dialog.style.display = "none";
     }
-}
+});
+
 
 function setbg() {
     /** * @param {string} styleString */
