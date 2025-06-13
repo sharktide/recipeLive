@@ -15,6 +15,26 @@
         {
             "source": "/confirm",
             "destination": "confirm.html"
+        },
+                {
+            "source": "/auth",
+            "destination": "auth.html"
+        },
+                {
+            "source": "/edit",
+            "destination": "edit.html"
+        },
+                {
+            "source": "/edit",
+            "destination": "editconfirm.html"
+        },
+                {
+            "source": "/myrecipes",
+            "destination": "myrecipes.html"
+        },
+                {
+            "source": "/search",
+            "destination": "auth.html"
         }
     ]
 
