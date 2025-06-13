@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/loadingnr.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,11 +40,28 @@
         </li>
 
     </nav>
+    <div id="del-dialog" class="dialog">
+        <div class="dialog-content">
+            <h3>Are you SURE you want to delete this?</h3>
+            <p>Run this command in your terminal:</p>
+            <div class="copy-container" id="copy-container">
+                <span id="install-command">pip install restructuredpython</span>
+                <button onclick="copyCommand()" class="copy-btn">📋 Copy</button>
+            </div>
+            <br>
+            <button onclick="closeDialog()" class="close-btn">Close</button>
+        </div>
+    </div>
     <div class="center">
         <h1 >My Recipes</h1>
     </div>
     <div class="container" id="container">
-        <div>
+        <div id="loading-spinner">
+            <br>
+            <div class="spinner"></div>
+            <p>Loading recipes...</p>
+        </div>
+        <div id="make">
             <input type="text" id="search-recipes" placeholder="Search Recipes">
             <select id="diff-dropdown">
                 <option>Choose Difficulty</option>

@@ -230,6 +230,11 @@ async function fetchRecipes() {
 
     } catch (error) {
         console.error('Error fetching recipes:', error);
+        alert(`Error Fetching Recipes: ${error}`)
+    } finally {
+        // Hide the loading spinner and reveal inputs
+        document.getElementById("loading-spinner").style.display = "none";
+        document.getElementById("make").style.display = "block";
     }
 }
 

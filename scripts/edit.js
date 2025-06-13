@@ -7,10 +7,17 @@ sb.auth.getUser()
     }
 });
 
+const urlParams = new URLSearchParams(window.location.search);
+
+const id = urlParams.get('id');
+
+if (!id) {
+    alert("Missing recipe ID for editing.");
+    window.location.href="/"
+}
 
 let itemListArray = [];
 
-const urlParams = new URLSearchParams(window.location.search);
 
 
 const titleinput = document.getElementById('titleinput');
@@ -127,33 +134,78 @@ function removeItem(itemText, li) {
 
     console.log(itemListArray);
 }
-try {
-    const str = urlParams.get('ingredients');
-    const ingredients = JSON.parse(str);
-    
-    if (ingredients === undefined || ingredients.length == 0) {
-        console.error('Ingredients is null');
+
+
+async function startup() {
+    try {
+        const response = await fetch(`https://sharktide-recipe2.hf.space/supabase/recipebyid?id=${urlParams.get('id')}`);
+        const data = await response.json(); // Parse JSON
+        console.log(data); // Debugging step to check response structure
+
+        const recipe = data.recipe?.row; // Extract recipe data safely
+
+        if (!recipe) {
+            console.error("Recipe data is missing!");
+            document.getElementById('recipe-detail').textContent = "Recipe not found!";
+            return;
+        }
+
+        // Set the full recipe details
+        titleinput.value = recipe.name;
+        timeinput.value = recipe.time;
+        nameinput.value = recipe.creator;
+        categoryinput.value = recipe.category;
+        diffinput.value = recipe.diff;
+
+        // Extract and process ingredients
+        const ingredients = recipe.ingredients || [];
+        if (ingredients.length === 0) {
+            console.error("Ingredients is null or empty");
+        } else {
+            ingredients.forEach(item => onloadaddItem(item));
+        }
+
+        descriptioninput.value = recipe.description.replace(/\\r\\n/g, "\n");
+        instructionsinput.value = recipe.instructions.replace(/\\r\\n/g, "\n");
+        try {
+            const ing = urlParams.get('ingredients');
+            const ingredients = JSON.parse(ing);
+            
+            if (ingredients === undefined || ingredients.length == 0) {
+                console.error('Ingredients is null');
+            }
+            itemListArray.forEach(item => {
+                itemListArray = itemListArray.filter(i => i !== item); // Remove from array
+                document.querySelectorAll("#itemList li").forEach(li => li.remove()); // Remove all elements
+            });
+            
+            // get ingredients from editconfirm if there
+            titleinput.value = urlParams.get('title');
+
+            timeinput.value = urlParams.get('time')
+
+            nameinput.value = urlParams.get('name');
+
+            categoryinput.value = urlParams.get('category');
+
+            diffinput.value = urlParams.get('diff');
+
+            ingredients.forEach(item => onloadaddItem(item));
+
+            descriptioninput.value = urlParams.get('desc');
+
+            instructionsinput.value = urlParams.get('inst');
+        } catch {}
+
+    } catch (error) {
+        console.error("Error fetching recipe details:", error);
+    } finally {
+        // Hide the loading spinner and reveal inputs
+        document.getElementById("loading-spinner").style.display = "none";
+        document.getElementById("make").style.display = "block";
     }
-    
-    
+}
 
-    // Set the full recipe details
-    titleinput.value = urlParams.get('title');
-
-    timeinput.value = urlParams.get('time')
-
-    nameinput.value = urlParams.get('name');
-
-    categoryinput.value = urlParams.get('category');
-
-    diffinput.value = urlParams.get('diff');
-
-    ingredients.forEach(item => onloadaddItem(item));
-
-    descriptioninput.value = urlParams.get('desc').replace("\\r\\n", "\n");
-
-    instructionsinput.value = urlParams.get('inst').replace("\\r\\n", "\n");
-} catch {}
 
 function setbg() {
     /**
@@ -234,7 +286,7 @@ document.getElementById('submit').addEventListener('click', function() {
         changeSubmitButtonColor(false);
         return;
     }
-    if (confirm('By uploading a recipe, you understand that it will be public information. The creators of FindMyFood are not liable or responsible in any way for the actions you commit on this site. We reserve the right to edit and delete accounts and recipes as necessary with or without notice.')) {
+    if (confirm('By editing a recipe, you understand that it will be public information. The creators of FindMyFood are not liable or responsible in any way for the actions you commit on this site. We reserve the right to edit and delete accounts and recipes as necessary with or without notice.')) {
     } else {
         return;
     }
@@ -243,7 +295,7 @@ document.getElementById('submit').addEventListener('click', function() {
     console.log(stringRepresentation);
 
 
-    confirmurl = `/confirm?title=${title}&time=${time}&name=${name}&category=${category}&diff=${diff}&ingredients=${stringRepresentation}&desc=${description}&inst=${instructions}`
+    confirmurl = `/editconfirm?id=${id}&title=${title}&time=${time}&name=${name}&category=${category}&diff=${diff}&ingredients=${stringRepresentation}&desc=${description}&inst=${instructions}`
     console.log(confirmurl)
     if (!(confirm('Proceed?'))) {
         return
@@ -254,7 +306,7 @@ document.getElementById('submit').addEventListener('click', function() {
 
 checkFormValidity();
 setbg()
-
+startup()
 
 // Copyright 2025 Rihaan Meher
 

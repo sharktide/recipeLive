@@ -263,11 +263,16 @@ async function fetchRecipes() {
 
     } catch (error) {
         console.error('Error fetching recipes:', error);
+    } finally {
+        document.getElementById("loading-spinner").style.display = "none";
+        document.getElementById("make").style.display = "block";
     }
 }
 
 function edit(event) {
-    void 0
+    const recipeCard = event.target.closest('.recipe-card');
+    const recipeId = recipeCard.querySelector('a').href.split('=')[1];
+    window.location.href = `/edit?id=${encodeURIComponent(recipeId)}`
 }
 
 async function del(event) {
