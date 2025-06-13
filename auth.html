@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>recipeLive - signin/signup</title>
-    <link rel="stylesheet" href="styles/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
+    <title>RecipeLive - Login or Sign Up</title>
+    <link rel="stylesheet" href="styles/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
+
     <nav id="nav">
         <div class="logo">RecipeLive 2025</div>
 
@@ -33,25 +31,32 @@
         <li id="user-dropdown" style="display: none; position: relative;">
         <button id="profile-btn">👤</button>
         <ul class="dropdown-menu">
-            <li><a href="#">My Recipes</a></li>
+            <li><a href="/myrecipes">My Recipes</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#" id="logout-btn">Logout</a></li>
         </ul>
         </li>
 
     </nav>
-    <div class="container">
-        <h1>Sign In / Sign Up</h1>
 
-        <input type="email" id= "email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Sign In or Sign Up</h1>
 
-        <button id="signup" onclick="signup()">Sign Up</button>
-        <button id="login" onclick="login()">Log In</button>
-
-        <p id="status"></p>
-
+            <form id="auth-form" style="padding-right: 20px">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div>
+                    <button id="signup" type="button">Sign Up</button>
+                </div>
+                <div style="padding-top: 5px;">
+                    <button id="login" type="button" style="padding-left: 18px; padding-right: 18px;">Log In</button>
+                </div>
+                <p id="status"></p>
+            </form>
+        </div>
     </div>
-    <script src="scripts/require.js"></script>
+
+    <script src="scripts/auth.js"></script>
 </body>
 </html>
