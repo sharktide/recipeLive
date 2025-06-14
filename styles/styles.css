@@ -237,6 +237,9 @@ textarea {
   }
 }
 
+button, a, select {
+  cursor: pointer
+}
 /*
    Copyright 2025 Rihaan Meher
 
