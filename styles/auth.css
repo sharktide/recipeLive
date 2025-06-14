@@ -82,13 +82,13 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh; /* Ensure full-page centering */
+    height: 100vh; /* Ensure full-page centering */
     width: 100%;
 }
 
 .auth-card {
     background: white;
-    padding: 30px;
+    padding: 10px;
     border-radius: var(--border-radius);
     box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     text-align: center;
@@ -116,11 +116,13 @@ form {
     align-items: center; /* Centers everything */
 }
 
-input, button {
-    width: 80%; /* Keep a balanced width */
-    max-width: 300px; /* Prevent them from being too wide */
-    text-align: center; /* Centers the text inside inputs */
+form input,
+form button {
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
 }
+
 
 
 /* Fix: Proper button styling */
@@ -236,4 +238,44 @@ button {
     .auth-card {
         width: 90%;
     }
+}
+
+/* Fix: Social login buttons layout */
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+  width: 100%;
+  align-items: center;
+}
+
+.gsi-material-button {
+  width: 100%;
+  max-width: 300px;
+}
+
+.auth-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.auth-action-buttons button {
+  flex: 1;
+  max-width: 140px;
+}
+
+.forgot-link {
+  font-size: 14px;
+  color: var(--blue);
+  text-decoration: none;
+  margin-top: 8px;
+  display: inline-block;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
 }

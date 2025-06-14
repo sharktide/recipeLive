@@ -8,15 +8,6 @@ async function logout() {
     location.reload();
 }
 
-// sb.auth.getUser().then(({ data, error }) => {
-//     const userInfo = document.getElementById("user-info");
-//     if (error || !data.user) {
-//         userInfo.textContent = "Not logged in";
-//     } else {
-//         userInfo.textContent = "Logged in as: " + data.user.email;
-//     }
-// });
-
 async function signup() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
