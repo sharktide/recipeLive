@@ -1,3 +1,5 @@
+import { linkify } from './helper/linkify.js';
+
 sb.auth.getUser()
 .then(result => {
     if (result.data && result.data.user) {
@@ -19,58 +21,52 @@ const editurl =  `/newrecipe?title=${urlParams.get('title')}&time=${urlParams.ge
 
 console.log(editurl)
 
-// Set the full recipe details
-const recipeNameElem = document.createElement('h2');
-recipeNameElem.textContent = urlParams.get('title');
+async function set() {
+    const recipeNameElem = document.createElement('h2');
+    recipeNameElem.textContent = urlParams.get('title');
 
-const recipeTimeElem = document.createElement('h4');
-recipeTimeElem.textContent = '⌚: ' + urlParams.get('time') + ' minutes'
+    const recipeTimeElem = document.createElement('h4');
+    recipeTimeElem.textContent = '⌚: ' + urlParams.get('time') + ' minutes'
 
-const recipeCreatorElem = document.createElement('p');
-recipeCreatorElem.textContent = 'By: ' + urlParams.get('name');
+    const recipeCreatorElem = document.createElement('p');
+    recipeCreatorElem.textContent = 'By: ' + urlParams.get('name');
 
-const recipeCategoryElem = document.createElement('p');
-recipeCategoryElem.textContent = urlParams.get('category')
+    const recipeCategoryElem = document.createElement('p');
+    recipeCategoryElem.textContent = urlParams.get('category')
 
-const recipeDiffElem = document.createElement('p');
-recipeDiffElem.textContent = urlParams.get('diff')
+    const recipeDiffElem = document.createElement('p');
+    recipeDiffElem.textContent = urlParams.get('diff')
 
-const ingredientsElem = document.createElement('p');
-ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
+    const ingredientsElem = document.createElement('p');
+    ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
 
-const descriptionElem = document.createElement('p');
-descriptionElem.setAttribute('style', 'white-space: pre-wrap;')
-const descriptionText = urlParams.get('desc') || ""
-descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
+    const descriptionElem = document.createElement('p');
+    descriptionElem.setAttribute('style', 'white-space: pre-wrap;')
+    const descriptionText = urlParams.get('desc') || ""
+    descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
 
-const instructionsElem = document.createElement('p');
-instructionsElem.setAttribute('style', 'white-space: pre-wrap;');
-const instructionsText = urlParams.get('inst') || "";
-instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
+    const instructionsElem = document.createElement('p');
+    instructionsElem.setAttribute('style', 'white-space: pre-wrap;');
+    const instructionsText = urlParams.get('inst') || "";
+    instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
 
-// Append to the container
-recipeDetailContainer.appendChild(recipeNameElem);
-recipeDetailContainer.appendChild(recipeTimeElem);
-recipeDetailContainer.appendChild(recipeCreatorElem);
-recipeDetailContainer.appendChild(recipeCategoryElem);
-recipeDetailContainer.appendChild(recipeDiffElem);
-recipeDetailContainer.appendChild(ingredientsElem);
-recipeDetailContainer.appendChild(descriptionElem);
-recipeDetailContainer.appendChild(instructionsElem);
+    // Append to the container
+    recipeDetailContainer.appendChild(recipeNameElem);
+    recipeDetailContainer.appendChild(recipeTimeElem);
+    recipeDetailContainer.appendChild(recipeCreatorElem);
+    recipeDetailContainer.appendChild(recipeCategoryElem);
+    recipeDetailContainer.appendChild(recipeDiffElem);
+    recipeDetailContainer.appendChild(ingredientsElem);
+    recipeDetailContainer.appendChild(descriptionElem);
+    recipeDetailContainer.appendChild(instructionsElem);
+}
 
-console.log(urlParams.get('title'));
-console.log(urlParams.get('name'));
-console.log(urlParams.get('time'));
-console.log(urlParams.get('category'));
-console.log(urlParams.get('diff'));
-console.log(ingredients);
-console.log(urlParams.get('desc'));
-console.log(urlParams.get('inst'));
+async function addlink() {
+    await set()
+    linkify()
+}
 
-
-
-
-
+addlink()
 
 document.getElementById('confirm').addEventListener('click', function() {
 

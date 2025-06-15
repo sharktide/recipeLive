@@ -1,3 +1,5 @@
+import { linkify } from './helper/linkify.js';
+
 const urlParams = new URLSearchParams(window.location.search);
 
 async function fetchRecipeDetails() {
@@ -72,6 +74,7 @@ async function fetchRecipeDetails() {
             // Handle case if recipe not found
             document.getElementById('recipe-detail').textContent = "Recipe not found!";
         }
+        linkify()
 
     } catch (error) {
         console.error('Error fetching recipe details:', error);
@@ -168,7 +171,6 @@ function setbg() {
 
 fetchRecipeDetails()
 setbg()
-
 
 // Copyright 2025 Rihaan Meher
 
