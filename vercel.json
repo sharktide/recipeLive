@@ -25,7 +25,7 @@
             "destination": "edit.html"
         },
                 {
-            "source": "/edit",
+            "source": "/editconfirm",
             "destination": "editconfirm.html"
         },
                 {
