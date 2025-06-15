@@ -39,12 +39,12 @@ const ingredientsElem = document.createElement('p');
 ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
 
 const descriptionElem = document.createElement('p');
-descriptionElem.setAttribute('style', 'white-space: pre;')
+descriptionElem.setAttribute('style', 'white-space: pre-wrap;')
 const descriptionText = urlParams.get('desc') || ""
 descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
 
 const instructionsElem = document.createElement('p');
-instructionsElem.setAttribute('style', 'white-space: pre;');
+instructionsElem.setAttribute('style', 'white-space: pre-wrap;');
 const instructionsText = urlParams.get('inst') || "";
 instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
 

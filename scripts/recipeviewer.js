@@ -50,12 +50,12 @@ async function fetchRecipeDetails() {
             ingredientsElem.textContent = 'Ingredients: ' + recipe.row.ingredients.join(', ');
 
             const descriptionElem = document.createElement('p');
-            descriptionElem.setAttribute('style', 'white-space: pre;')
+            descriptionElem.setAttribute('style', 'white-space: pre-wrap;')
             const descriptionText = recipe.row.description || ""
             descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
 
             const instructionsElem = document.createElement('p');
-            instructionsElem.setAttribute('style', 'white-space: pre;');
+            instructionsElem.setAttribute('style', 'white-space: pre-wrap;');
             const instructionsText = recipe.row.instructions || "";
             instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
 

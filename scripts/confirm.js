@@ -39,12 +39,12 @@ const ingredientsElem = document.createElement('p');
 ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
 
 const descriptionElem = document.createElement('p');
-descriptionElem.setAttribute('style', 'white-space: pre;')
+descriptionElem.setAttribute('style', 'white-space: pre-wrap;')
 const descriptionText = urlParams.get('desc') || ""
 descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
 
 const instructionsElem = document.createElement('p');
-instructionsElem.setAttribute('style', 'white-space: pre;');
+instructionsElem.setAttribute('style', 'white-space: pre-wrap;');
 const instructionsText = urlParams.get('inst') || "";
 instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
 
@@ -151,7 +151,7 @@ document.getElementById('confirm').addEventListener('click', function() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            if (data.message == 'Recipe stored successfully.') {
+            if (data.message == 'Recipe stored successfully!') {
                 alert('Recipe Added Successfully, it may take up to 2 minutes for it to update across the site')
                 window.location.href = '/';
             }
