@@ -150,9 +150,9 @@ try {
 
     ingredients.forEach(item => onloadaddItem(item));
 
-    descriptioninput.value = urlParams.get('desc').replace("\\r\\n", "\n");
+    descriptioninput.value = urlParams.get('desc').replace(/\\r\\n/g, "\n");
 
-    instructionsinput.value = urlParams.get('inst').replace("\\r\\n", "\n");
+    instructionsinput.value = urlParams.get('inst').replace(/\\r\\n/g, "\n")
 } catch {}
 
 function setbg() {
