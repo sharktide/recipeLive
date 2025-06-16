@@ -168,34 +168,23 @@ async function startup() {
         descriptioninput.value = recipe.description.replace(/\\r\\n/g, "\n");
         instructionsinput.value = recipe.instructions.replace(/\\r\\n/g, "\n");
         try {
-            const ing = urlParams.get('ingredients');
-            const ingredients = JSON.parse(ing);
-            
-            if (ingredients === undefined || ingredients.length == 0) {
-                console.error('Ingredients is null');
-            }
-            itemListArray.forEach(item => {
-                itemListArray = itemListArray.filter(i => i !== item); // Remove from array
-                document.querySelectorAll("#itemList li").forEach(li => li.remove()); // Remove all elements
-            });
-            
-            // get ingredients from editconfirm if there
-            titleinput.value = urlParams.get('title');
+            const temp = JSON.parse(sessionStorage.getItem('editRecipe'));
+            if (!temp) throw new Error("editRecipe not found");
 
-            timeinput.value = urlParams.get('time')
+            itemListArray.length = 0;
+            document.querySelectorAll("#itemList li").forEach(li => li.remove());
 
-            nameinput.value = urlParams.get('name');
-
-            categoryinput.value = urlParams.get('category');
-
-            diffinput.value = urlParams.get('diff');
-
-            ingredients.forEach(item => onloadaddItem(item));
-
-            descriptioninput.value = urlParams.get('desc');
-
-            instructionsinput.value = urlParams.get('inst');
-        } catch {}
+            titleinput.value = temp.title || '';
+            nameinput.value = temp.name || '';
+            timeinput.value = temp.time || '';
+            categoryinput.value = temp.category || '';
+            diffinput.value = temp.diff || '';
+            descriptioninput.value = temp.desc?.replace(/\\r\\n/g, "\n") || '';
+            instructionsinput.value = temp.inst?.replace(/\\r\\n/g, "\n") || '';
+            (temp.ingredients || []).forEach(i => onloadaddItem(i));
+        } catch (e) {
+            console.warn("Falling back to Supabase recipe only (no session overrides)");
+        }
 
     } catch (error) {
         console.error("Error fetching recipe details:", error);
@@ -295,13 +284,19 @@ document.getElementById('submit').addEventListener('click', function() {
     console.log(stringRepresentation);
 
 
-    confirmurl = `/editconfirm?id=${id}&title=${title}&time=${time}&name=${name}&category=${category}&diff=${diff}&ingredients=${stringRepresentation}&desc=${description}&inst=${instructions}`
-    console.log(confirmurl)
-    if (!(confirm('Proceed?'))) {
-        return
-    }
-    window.location.href = confirmurl
+    const recipePayload = {
+        title,
+        name,
+        time,
+        category,
+        diff,
+        ingredients: itemListArray,
+        desc: description,
+        inst: instructions
+    };
 
+    sessionStorage.setItem('editRecipeConfirm', JSON.stringify(recipePayload));
+    window.location.href = `/editconfirm?id=${id}`;
 });
 
 checkFormValidity();

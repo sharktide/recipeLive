@@ -12,6 +12,15 @@ let itemListArray = [];
 
 const urlParams = new URLSearchParams(window.location.search);
 
+let recipeData;
+try {
+    recipeData = JSON.parse(sessionStorage.getItem('currentRecipe'));
+    if (!recipeData) throw new Error("Recipe not found in sessionStorage");
+} catch (e) {
+    alert("No recipe data found. Please start again.");
+    window.location.href = '/';
+}
+
 
 const titleinput = document.getElementById('titleinput');
 const nameinput = document.getElementById('nameinput');
@@ -128,31 +137,14 @@ function removeItem(itemText, li) {
     console.log(itemListArray);
 }
 try {
-    const str = urlParams.get('ingredients');
-    const ingredients = JSON.parse(str);
-    
-    if (ingredients === undefined || ingredients.length == 0) {
-        console.error('Ingredients is null');
-    }
-    
-    
-
-    // Set the full recipe details
-    titleinput.value = urlParams.get('title');
-
-    timeinput.value = urlParams.get('time')
-
-    nameinput.value = urlParams.get('name');
-
-    categoryinput.value = urlParams.get('category');
-
-    diffinput.value = urlParams.get('diff');
-
-    ingredients.forEach(item => onloadaddItem(item));
-
-    descriptioninput.value = urlParams.get('desc').replace(/\\r\\n/g, "\n");
-
-    instructionsinput.value = urlParams.get('inst').replace(/\\r\\n/g, "\n")
+    titleinput.value = recipeData.title || '';
+    nameinput.value = recipeData.name || '';
+    timeinput.value = recipeData.time || '';
+    categoryinput.value = recipeData.category || '';
+    diffinput.value = recipeData.diff || '';
+    descriptioninput.value = recipeData.desc.replace(/\\r\\n/g, "\n") || '';
+    instructionsinput.value = recipeData.inst.replace(/\\r\\n/g, "\n") || '';
+    recipeData.ingredients.forEach(item => onloadaddItem(item));
 } catch {}
 
 function setbg() {
@@ -243,13 +235,22 @@ document.getElementById('submit').addEventListener('click', function() {
     console.log(stringRepresentation);
 
 
-    confirmurl = `/confirm?title=${title}&time=${time}&name=${name}&category=${category}&diff=${diff}&ingredients=${stringRepresentation}&desc=${description}&inst=${instructions}`
-    console.log(confirmurl)
-    if (!(confirm('Proceed?'))) {
-        return
-    }
-    window.location.href = confirmurl
+    const recipeData = {
+        title,
+        name,
+        time,
+        category,
+        diff,
+        ingredients: itemListArray,
+        desc: description,
+        inst: instructions
+    };
 
+    sessionStorage.setItem('currentRecipe', JSON.stringify(recipeData));
+
+    if (!confirm('Proceed?')) return;
+
+    window.location.href = '/confirm';
 });
 
 checkFormValidity();

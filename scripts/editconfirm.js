@@ -12,53 +12,54 @@ sb.auth.getUser()
 // Get the recipe name from the query parameter
 const urlParams = new URLSearchParams(window.location.search);
 
-const str = urlParams.get('ingredients');
-const ingredients = JSON.parse(str);
-
 const recipeDetailContainer = document.getElementById('recipe-detail');
 
-const editurl =  `/edit?id=${urlParams.get('id')}&title=${urlParams.get('title')}&time=${urlParams.get('time')}&name=${urlParams.get('name')}&category=${urlParams.get('category')}&diff=${urlParams.get('diff')}&ingredients=${urlParams.get('ingredients')}&desc=${urlParams.get('desc')}&inst=${urlParams.get('inst')}`
+const id = urlParams.get('id');
+const temp = JSON.parse(sessionStorage.getItem('editRecipeConfirm'));
 
-console.log(editurl)
+if (!id || !temp) {
+    alert("Missing recipe ID or recipe data.");
+    window.location.href = "/";
+}
+
+const {
+    title,
+    name,
+    time,
+    category,
+    diff,
+    ingredients,
+    desc,
+    inst
+} = temp;
 
 async function set() {
     const recipeNameElem = document.createElement('h2');
-    recipeNameElem.textContent = urlParams.get('title');
+    recipeNameElem.textContent = title;
 
     const recipeTimeElem = document.createElement('h4');
-    recipeTimeElem.textContent = '⌚: ' + urlParams.get('time') + ' minutes'
+    recipeTimeElem.textContent = '⌚: ' + time + ' minutes';
 
     const recipeCreatorElem = document.createElement('p');
-    recipeCreatorElem.textContent = 'By: ' + urlParams.get('name');
+    recipeCreatorElem.textContent = 'By: ' + name;
 
     const recipeCategoryElem = document.createElement('p');
-    recipeCategoryElem.textContent = urlParams.get('category')
+    recipeCategoryElem.textContent = category;
 
     const recipeDiffElem = document.createElement('p');
-    recipeDiffElem.textContent = urlParams.get('diff')
+    recipeDiffElem.textContent = diff;
 
     const ingredientsElem = document.createElement('p');
     ingredientsElem.textContent = 'Ingredients: ' + ingredients.join(', ');
 
     const descriptionElem = document.createElement('p');
-    descriptionElem.setAttribute('style', 'white-space: pre-wrap;')
-    const descriptionText = urlParams.get('desc') || ""
-    descriptionElem.textContent = descriptionText.replace(/\\r\\n|\\n/g, '\r\n');
+    descriptionElem.setAttribute('style', 'white-space: pre-wrap;');
+    descriptionElem.textContent = (desc || '').replace(/\\r\\n|\\n/g, '\r\n');
 
     const instructionsElem = document.createElement('p');
     instructionsElem.setAttribute('style', 'white-space: pre-wrap;');
-    const instructionsText = urlParams.get('inst') || "";
-    instructionsElem.textContent = instructionsText.replace(/\\r\\n|\\n/g, '\r\n');
+    instructionsElem.textContent = (inst || '').replace(/\\r\\n|\\n/g, '\r\n');
 
-    // Append to the container
-    recipeDetailContainer.appendChild(recipeNameElem);
-    recipeDetailContainer.appendChild(recipeTimeElem);
-    recipeDetailContainer.appendChild(recipeCreatorElem);
-    recipeDetailContainer.appendChild(recipeCategoryElem);
-    recipeDetailContainer.appendChild(recipeDiffElem);
-    recipeDetailContainer.appendChild(ingredientsElem);
-    recipeDetailContainer.appendChild(descriptionElem);
-    recipeDetailContainer.appendChild(instructionsElem);
 }
 
 async function addlink() {
@@ -97,14 +98,14 @@ document.getElementById('confirm').addEventListener('click', function () {
         alert("Sending data. Please do not refresh or navigate away...");
 
         const recipeData = {
-            name: urlParams.get('title'),
-            time: urlParams.get('time'),
-            creator: urlParams.get('name'),
-            category: urlParams.get('category'),
-            diff: urlParams.get('diff'),
+            name: title,
+            time,
+            creator: name,
+            category,
+            diff,
             ingredients,
-            description: urlParams.get('desc'),
-            instructions: urlParams.get('inst'),
+            description: desc,
+            instructions: inst,
             user_id: userId
         };
 
@@ -133,9 +134,11 @@ document.getElementById('confirm').addEventListener('click', function () {
 });
 
 
-document.getElementById('edit').addEventListener('click', function() {
-    window.location.href = editurl;
-})
+document.getElementById('edit').addEventListener('click', function () {
+    sessionStorage.setItem('editRecipe', JSON.stringify(temp)); // push current state back
+    window.location.href = `/edit?id=${id}`;
+});
+
 
 
 // Copyright 2025 Rihaan Meher
