@@ -60,6 +60,14 @@ async function set() {
     instructionsElem.setAttribute('style', 'white-space: pre-wrap;');
     instructionsElem.textContent = (inst || '').replace(/\\r\\n|\\n/g, '\r\n');
 
+    recipeDetailContainer.appendChild(recipeNameElem);
+    recipeDetailContainer.appendChild(recipeTimeElem);
+    recipeDetailContainer.appendChild(recipeCreatorElem);
+    recipeDetailContainer.appendChild(recipeCategoryElem);
+    recipeDetailContainer.appendChild(recipeDiffElem);
+    recipeDetailContainer.appendChild(ingredientsElem);
+    recipeDetailContainer.appendChild(descriptionElem);
+    recipeDetailContainer.appendChild(instructionsElem);
 }
 
 async function addlink() {
@@ -77,19 +85,15 @@ document.getElementById('confirm').addEventListener('click', function () {
         return;
     }
 
-    if (!urlParams.get('title') || !urlParams.get('name') || !urlParams.get('time') ||
-        !urlParams.get('category') || !urlParams.get('diff') || !urlParams.get('desc') ||
-        !urlParams.get('inst') || !ingredients || ingredients.length === 0) {
+    if (!title || !name || !time ||
+        !category || !diff || !desc ||
+        !inst || !ingredients || ingredients.length === 0) {
         alert("All fields are required.");
         return;
     }
 
-    sb.auth.getUser().then(result => {
-        const userId = result.data?.user?.id;
-        if (!userId) {
-            alert("User not authenticated.");
-            return;
-        }
+    sb.auth.getSession().then(({ data }) => {
+        const token = data?.session?.access_token;
 
         if (!confirm('Are you sure you want to update this recipe? This action cannot be undone.')) {
             return;
@@ -106,13 +110,13 @@ document.getElementById('confirm').addEventListener('click', function () {
             ingredients,
             description: desc,
             instructions: inst,
-            user_id: userId
         };
 
         fetch(`https://sharktide-recipe2.hf.space/supabase/edit/recipe?id=${id}`, {
-            method: 'PATCH', // or 'PATCH' if you're doing partial updates
+            method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(recipeData)
         })

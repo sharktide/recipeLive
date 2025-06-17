@@ -94,9 +94,9 @@ document.getElementById('confirm').addEventListener('click', function () {
         }
     }
 
-    sb.auth.getUser()
-        .then(result => {
-            const userId = result.data?.user?.id;
+    sb.auth.getSession()
+        .then(({ data }) => {
+            const token = data?.session?.access_token;
             if (!confirm('Are you sure you would like to upload the recipe? This action cannot be undone.')) {
                 return;
             }
@@ -112,19 +112,18 @@ document.getElementById('confirm').addEventListener('click', function () {
                 ingredients: recipe.ingredients,
                 description: recipe.desc,
                 instructions: recipe.inst,
-                user_id: userId
             };
 
             console.log("Uploading recipe:", recipeData);
 
             return fetch('https://sharktide-recipe2.hf.space/supabase/add/recipe', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify(recipeData)
             });
         })
         .then(response => {
-            if (!response) return; // early return if previous block was halted
+            if (!response) return;
             return response.json();
         })
         .then(data => {

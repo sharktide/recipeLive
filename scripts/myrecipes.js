@@ -302,7 +302,8 @@ document.getElementById("yesdel").addEventListener("click", async () => {
     const recipeId = dialog.dataset.recipeId;
 
     try {
-        const { data: { user } } = await sb.auth.getUser();
+        const { data } = await sb.auth.getSession();
+        const token = data?.session?.access_token;
         if (!user) {
             alert("Not logged in");
             return;
@@ -311,18 +312,18 @@ document.getElementById("yesdel").addEventListener("click", async () => {
         const response = await fetch("https://sharktide-recipe2.hf.space/supabase/delrecipe", {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` 
             },
             body: JSON.stringify({
                 id: recipeId,
-                user_id: user.id
             })
         });
 
         const result = await response.json();
 
         if (response.ok && result.success) {
-            window.location.reload
+            window.location.href = window.location.href;
         } else {
             alert("Error deleting recipe: " + (result.detail || "Unknown error"));
         }
