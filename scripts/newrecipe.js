@@ -17,8 +17,7 @@ try {
     recipeData = JSON.parse(sessionStorage.getItem('currentRecipe'));
     if (!recipeData) throw new Error("Recipe not found in sessionStorage");
 } catch (e) {
-    alert("No recipe data found. Please start again.");
-    window.location.href = '/';
+    void 0
 }
 
 
